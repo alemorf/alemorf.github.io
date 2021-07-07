@@ -585,9 +585,9 @@ function start() {
         if (!audioContext) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             audioContext.resume();
-            channel0.beeper = new Beeper(audioContext, "triangle", 0.7);
-            channel1.beeper = new Beeper(audioContext, "square", 0.2);
-            channel2.beeper = new Beeper(audioContext, "square", 0.2);
+            channel0.beeper = new Beeper(audioContext, "square", 0.3);
+            channel1.beeper = new Beeper(audioContext, "square", 0.3);
+            channel2.beeper = new Beeper(audioContext, "square", 0.3);
         }
         preparedSeconds = audioContext.currentTime + 1;
         channel0.dataPos = 0;
