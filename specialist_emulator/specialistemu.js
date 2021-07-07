@@ -9,6 +9,24 @@ function specialistEmu()
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
+    function loadAs(result)
+    {
+        var link = document.createElement('div');
+        link.innerHTML = '<input type="file">';
+        var load = link.childNodes[0];
+        document.body.appendChild(link);
+        load.click();
+        document.body.removeChild(link);
+        load.onchange = function()
+        {
+            var fr = new FileReader;
+            fr.readAsBinaryString(load.files[0]);
+            fr.onload = function(event) {
+                result(load.files[0].name, event.target.result);
+            };
+        }
+    }
+
     // Меню загрузки
     function makeLoadMenu()
     {
@@ -36,6 +54,13 @@ function specialistEmu()
     }
     makeLoadMenu();
 
+    document.getElementById('loadUserButton').onclick = function() {
+        loadAs(function(fileName, data) 
+        {
+            loadFile(binaryToArray(data));
+        });        
+    }
+    
     // Для отрисовки
     var canvas   = document.getElementById("specialistcanvas");
 
@@ -58,13 +83,24 @@ function specialistEmu()
 
     document.getElementById('resetButton').onclick = reset;
 
+    function binaryToArray(b)
+    {
+        var a = [];
+        for (var i in b)
+            a[i] = b.charCodeAt(i);
+        return a;
+    }
+
     function loadFile(file)
     {
         var off = 0;
         if (file[0] == 0xE6) off++;
         var start = (file[off + 1] << 8) | file[off]; off += 2;
         var end   = (file[off + 1] << 8) | file[off]; off += 2;
-        if(end < start) return;
+        if(end < start) {
+            alert("Некорректный файл");
+            return;
+        }
         var size = end - start + 1;
         reset();
         for(var i=0; i<300000;)
