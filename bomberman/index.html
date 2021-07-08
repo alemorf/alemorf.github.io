@@ -1,0 +1,372 @@
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+</head>
+<body onload="init()">
+<script language="JavaScript">document.deep=2;</script>
+<script language="JavaScript" src="../../common.js"></script>
+<canvas id="canvas" width="224" height="224"></canvas><br>
+<script laguage="javascript">
+
+//---------------------------------------------------------------------------
+// ������ ����
+//---------------------------------------------------------------------------
+
+var levels = [
+  [ "#######",
+    "#     #",
+    "# #4#2#",
+    "# 2   #",
+    "# # #2#",
+    "# 2 2 #",
+    "#######",
+  ],
+  [ "#################",
+    "#   7  2        #",
+    "# # # #2# # # # #",
+    "#    622   226  #",
+    "# # #2# # #2#2# #",
+    "#42622   622  2 #",
+    "# #@#2# #2# # # #",
+    "# 2  2@   2 2   #",
+    "#2#2#2#6#2# #2# #",
+    "#    2   2 @2 6 #",
+    "#2# # #2#2#2# # #",
+    "# 2   2@        #",
+    "#################",
+  ]
+];
+
+//---------------------------------------------------------------------------
+// ������ ����������
+//---------------------------------------------------------------------------
+
+var sprites, canvas, canvas0;
+var animationFire = [ 48,32,16,0,16,32,48 ];
+var animationBomb = [ 3,19,3,35 ];
+var animationPlayer = [ 0,0,0,0,9,10,9,11,0,1,0,2,3,4,3,5,6,7,6,8 ];
+var animationEnemy = [ 0,1,2,1 ];
+var keyUp=0, keyDown=0, keyLeft=0, keyRight=0, keyFire=0;  
+var moveBonus, moveX, moveY, moveDead, moveExit; // �������������� �������� MOVE
+var enemyAtimationTime = 0;
+var playerAnimationTime = 0;
+var level=0;
+var map, times, playerX, playerY, mapW, mapH, enemy, enemyY, enemyD;
+var fireSize, fireMax, bombCount, gameOver;
+
+//---------------------------------------------------------------------------
+// ������ ����
+//---------------------------------------------------------------------------
+
+function init() {
+  document.onkeydown = function(e) { keyHandler(e,1); }
+  document.onkeyup = function(e) { keyHandler(e,0); }
+  canvas0 = document.getElementById("canvas");
+  canvas = canvas0.getContext('2d');	
+  sprites = new Image(); // �������
+  sprites.src = 'bomberman.png';
+  sprites.onload = function() { startGame(); setInterval("tick()", 20); }
+}
+
+//---------------------------------------------------------------------------
+// ���������� ������� ����������
+//---------------------------------------------------------------------------
+
+function keyHandler(e,m) {
+  var pressedKey;
+  if(document.all) pressedKey=window.event.keyCode;
+              else pressedKey=e.which;
+  switch(pressedKey) {
+    case 38: keyUp=m; break;
+    case 40: keyDown=m; break;
+    case 37: keyLeft=m; break;
+    case 39: keyRight=m; break;
+    case 32: keyFire=m; break;
+  }    
+}
+
+//---------------------------------------------------------------------------
+// �������� ����� (������������ � startGame � makeFire2)
+//---------------------------------------------------------------------------
+
+function makeEnemy(x,y) {
+  var e = enemyX.length; 
+  enemyX[e] = x*32;
+  enemyY[e] = y*32;
+  enemyD[e] = 0;
+}
+
+//---------------------------------------------------------------------------
+// ������ ����
+//---------------------------------------------------------------------------
+
+function startGame() {
+  var lv = levels[level];
+
+  keyUp          = 0;
+  keyDown        = 0;
+  keyLeft        = 0;
+  keyRight       = 0;
+  keyFire        = 0;
+  enemyX         = new Array();
+  enemyY         = new Array();
+  enemyD         = new Array();
+  playerX        = 32;
+  playerY        = 32;
+  gameOver       = 0;
+  fireSize       = 1;
+  fireMax        = 1;
+  bombCount      = 0;
+  mapH           = lv.length;
+  mapW           = lv[0].length;
+  canvas0.width  = mapW*32;
+  canvas0.height = mapH*32;	
+  map            = new Array(mapW*mapH);
+  times          = new Array(mapW*mapH);
+
+  for(var y=0; y<mapH; y++) {
+    var s=lv[y];  
+    for(var z, x=0; x<mapW; x++) {
+      switch(z=s.charAt(x)) {
+        case '@': z=0; makeEnemy(x,y); break;
+        case '#': z=1; break;
+        case '4': z=-4; break;
+        case '6': z=-6; break;
+        case '7': z=-7; break;
+      }
+      map[x+y*mapW] = z*1;
+      times[x+y*mapW] = 0;
+    }
+  }  
+}
+
+//---------------------------------------------------------------------------
+// ����������� ������� � �������� (������������ � ������� tick)
+//---------------------------------------------------------------------------
+
+function moveLogic(dir,step) {
+  var x=moveX, y=moveY;
+
+  switch(dir) {
+    case 1: y-=2; break;
+    case 2: y+=2; break;
+    case 3: x-=2; break;
+    case 4: x+=2; break;
+  }
+
+  a1 = moveLogic2(x,y);
+  a2 = moveLogic2(x+31,y);
+  a3 = moveLogic2(x,y+31);
+  a4 = moveLogic2(x+31,y+31);
+
+  if(moveDead = (a1>3 || a2>3 || a3>3 || a4>4)) return 0;
+ 
+  if(step==0) {
+    var m1,m2;
+    switch(dir) {
+      case 1: m1=4, m2=3; break;
+      case 2: a1=a3, a2=a4, m1=4, m2=3; break;
+      case 3: a2=a3, m1=2, m2=1; break;
+      case 4: a1=a2, a2=a4, m1=2, m2=1; break;
+      default: return 0;
+    }
+    if(a1!=0 && a2==0) return moveLogic(m1, 1);
+    if(a1==0 && a2!=0) return moveLogic(m2, 1); 
+    if(a1!=0 && a2!=0) return 0;
+  }
+
+  moveX=x, moveY=y;
+
+  return dir;
+}
+
+//---------------------------------------------------------------------------
+// ������������ � ������� moveLogic
+//---------------------------------------------------------------------------
+
+function moveLogic2(x,y) {
+  var a = map[(x>>5)+(y>>5)*mapW];
+  if(a==4) { // �����
+    moveExit = 1;
+    a = 2;   
+  }
+  if(a==6 || a==7) { // �����
+    if(moveBonus) {
+      if(a==6) fireSize++;
+          else fireMax++;
+      map[(x>>5)+(y>>5)*mapW] = 0;
+    }
+    a = 0;
+  }
+  return a;
+}
+
+//---------------------------------------------------------------------------
+// �������� ������ (������������ � ������� tick)
+//---------------------------------------------------------------------------
+
+function makeFire(x,y) {
+  map[x+y*mapW] = 21;
+  times[x+y*mapW] = 25;
+  makeFire2(x, y, 1, 0, fireSize, 29, 25);
+  makeFire2(x, y, -1, 0, fireSize, 17, 25);
+  makeFire2(x, y, 0, 1, fireSize, 23, 22);
+  makeFire2(x, y, 0, -1, fireSize, 20, 22);
+}
+
+//---------------------------------------------------------------------------
+// ������������ � makeFire
+//---------------------------------------------------------------------------
+
+function makeFire2(x,y,dx,dy,s,i1,i0) {
+  while(s-->0) {
+    x+=dx, y+=dy;
+    w=map[x+y*mapW];
+    if(w<0) { map[x+y*mapW]=-w; return; }
+    if(w==4) {
+      makeEnemy(x,y);
+    }
+    if(w!=0 && w!=2) return;
+    map[x+y*mapW] = s==0 ? i1 : i0;
+    times[x+y*mapW] = 25;
+    if(w!=0 && w!=1) return;
+  }
+}
+
+//---------------------------------------------------------------------------
+// �������� ���� ����
+//---------------------------------------------------------------------------
+
+function tick() {
+  // 1. ����������� ��������
+  moveBonus = 0; // ������� ������� �� ���������
+  var noMonsters = 1;
+  for(var i=0; i<enemyX.length; i++) { 
+    moveX=enemyX[i], moveY=enemyY[i];
+
+    if(moveX==-1) continue;
+    noMonsters = 0;
+
+    // ������ ����� �������� ���������  
+    if(moveX%32==0 && moveY%32==0 && Math.random()>0.8) {
+      var e=Math.floor(2*Math.random())+1;
+      if(enemyD[i]==1 || enemyD[i]==2) e+=2;
+      if(moveLogic(e,0)!=0) enemyD[i]=e;
+      moveX=enemyX[i], moveY=enemyY[i];
+    }
+
+    // ������� �������
+    if(moveLogic(enemyD[i],0)!=0) {
+      // ������ ������������ � ��������� �����
+      enemyX[i]=moveX, enemyY[i]=moveY;
+    } else {
+      // ������ ��� �������
+      if(moveDead) { 
+        enemyX[i]=-1;
+        continue;
+      }
+      // ������ � ������, ������������� ���
+      enemyD[i]++;
+      if(enemyD[i]==5) enemyD[i]-=4;
+    }
+  }
+
+  // 2. ������ �����
+  if(keyFire) {
+    if(gameOver) {
+      startGame();
+      return;
+    }
+    if(bombCount<fireMax) {
+      // ����� ��������� ������ �� �����.
+      x = keyLeft ? 31 : keyRight ? 0 : 15;
+      y = keyUp ? 31 : keyDown ? 0 : 15;
+      x = ((playerX+x)>>5);
+      y = ((playerY+y)>>5);
+      if(map[x+y*mapW]==0) {
+        map[x+y*mapW] = 3;
+        times[x+y*mapW] = 200;
+        bombCount++;
+        keyFire=0;
+      }
+    }
+  }
+
+  // 3. ����������� ������ � ��������
+  for(var i=0; !gameOver && i<enemyX.length; i++)
+    if(enemyX[i]!=-1 && playerX<enemyX[i]+32 && playerX+32>enemyX[i] && playerY<enemyY[i]+32 && playerY+32>enemyY[i])
+      gameOver=1;
+
+  // 4. ���������� �������
+  var playerDir=0;
+  if(!gameOver) {
+    // ����������� ������
+    if(keyUp) playerDir=1; else
+    if(keyDown) playerDir=2; else
+    if(keyLeft) playerDir=3; else
+    if(keyRight) playerDir=4;
+
+    moveBonus=1; // ����� ����� ����� ������
+    moveX=playerX, moveY=playerY, moveExit=0;
+    playerDir = moveLogic(playerDir, 0, 1);
+    gameOver = moveDead, playerX=moveX, playerY=moveY;                                 
+
+    // ����� ������
+    if(moveExit && noMonsters) {
+      level++;
+      if(level==levels.length) level=0;
+      startGame();
+      return;
+    }
+  }
+
+  // 5. �����
+  for(var y=0; y<mapH; y++)
+    for(var x=0; x<mapW; x++) {
+      var a = map[x+y*mapW];
+      if(a==3) {
+        if(--times[x+y*mapW]==0) {
+          bombCount--; 
+          makeFire(x,y);
+        }
+      } else
+      if(a>=16) {
+        if(--times[x+y*mapW]==0)
+          map[x+y*mapW]=0;
+      }
+    }
+
+  // 6.1. ��������� �����
+  for(var y=0; y<mapH; y++)
+    for(var x=0; x<mapW; x++) {
+      s = map[x+y*mapW];
+      if(s==3) s = animationBomb[(times[x+y*mapW]>>4)%4]; else
+      if(s>15) s += animationFire[times[x+y*mapW]>>2]; else
+      if(s<0) s=2;
+      canvas.drawImage(sprites, 32*(s>>2), 32*(s%4), 32,32, x*32, y*32, 32,32);
+    }
+
+  // 6.2. ��������� ������
+  for(var i=0; i<enemyX.length; i++) { 
+    moveX=enemyX[i], moveY=enemyY[i];
+    if(moveX==-1) continue;
+    canvas.drawImage(sprites, 1+33*animationEnemy[enemyAtimationTime>>4], 170, 32, 40, moveX, moveY-8, 32, 40);
+  }
+  enemyAtimationTime++; enemyAtimationTime%=64;
+
+  // 6.3. ��������� ������
+  var playerImg = 12;
+  if(!gameOver) {
+    playerImg = animationPlayer[playerDir*4+(playerAnimationTime>>3)];
+    playerAnimationTime++; playerAnimationTime%=32;
+  }
+  canvas.drawImage(sprites, 1+33*playerImg, 129, 32, 40, playerX, playerY-8, 32, 40);
+}
+
+//---------------------------------------------------------------------------
+
+// (c) vinxru.
+// ���� ��� ����� ������������ � ����� �����, ��� ���������� ��������� (c) vinxru.
+
+</script>             
+</body></html>
