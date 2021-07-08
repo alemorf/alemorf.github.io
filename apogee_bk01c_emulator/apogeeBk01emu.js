@@ -8,6 +8,25 @@ function apogeeBk01Emu()
         script.src = file;
         document.getElementsByTagName('head')[0].appendChild(script);
     }
+    
+    function loadAs(result)
+    {
+        var link = document.createElement('div');
+        link.innerHTML = '<input type="file">';
+        var load = link.childNodes[0];
+        document.body.appendChild(link);
+        load.click();
+        document.body.removeChild(link);
+        load.onchange = function()
+        {
+            var fr = new FileReader;
+            fr.readAsBinaryString(load.files[0]);
+            fr.onload = function(event) {
+                result(load.files[0].name, event.target.result);
+            };
+        }
+    }
+
 
     // Меню загрузки
     function makeLoadMenu()
@@ -57,13 +76,24 @@ function apogeeBk01Emu()
 
     document.getElementById('resetButton').onclick = reset;
     
+    function binaryToArray(b)
+    {
+        var a = [];
+        for (var i in b)
+            a[i] = b.charCodeAt(i);
+        return a;
+    }
+
     function loadFile(file)
     {
         var off = 0;
         if (file[0] == 0xE6) off++;
         var start = (file[off] << 8) | file[off + 1]; off += 2;
         var end   = (file[off] << 8) | file[off + 1]; off += 2;
-        if(end < start) return;
+        if(end < start) {
+            alert("Некорректный файл");
+            return;
+        }
         var size = end - start + 1;
         reset();
         for(var i=0; i<3000000;)
@@ -74,6 +104,13 @@ function apogeeBk01Emu()
     }
 
     window.loadFile = loadFile;
+    
+    document.getElementById('loadUserButton').onclick = function() {
+        loadAs(function(fileName, data) 
+        {
+            loadFile(binaryToArray(data));
+        });        
+    }    
 
     cpu.readMemory = function(addr)
     {
