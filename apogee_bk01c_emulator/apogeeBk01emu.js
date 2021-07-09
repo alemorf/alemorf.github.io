@@ -8,7 +8,7 @@ function apogeeBk01Emu()
         script.src = file;
         document.getElementsByTagName('head')[0].appendChild(script);
     }
-    
+
     function loadAs(result)
     {
         var link = document.createElement('div');
@@ -29,31 +29,33 @@ function apogeeBk01Emu()
 
 
     // Меню загрузки
-    function makeLoadMenu()
-    {
-        var loadmenu = document.getElementById('loadmenu');
-        var loadButton = document.getElementById('loadButton');
-
-        loadButton.onclick = function()
-        {
-            loadmenu.style.display = "block";
-        }
-
-        function loadMenuClick(name)
-        {
-            loadmenu.style.display = "none";
-            include("file_" + this.innerHTML + ".js");
-        }
-
-        var html = "Выберите файл для загрузки<br><br>";
-        for(var i in fileList)
-            html += "<div>" + fileList[i] + "</div>";
-        loadmenu.innerHTML = html;
-
-        for(var i in loadmenu.childNodes)
-            loadmenu.childNodes[i].onclick = loadMenuClick;
+    var loadmenu = document.getElementById('loadmenu');
+    var loadbutton = document.getElementById('loadButton');
+    var loadmenu_visible = false;
+    
+    function showLoadMenu(visible) {
+        loadmenu_visible = visible;
+        loadmenu.style.display = loadmenu_visible ? "block" : "none";
     }
-    makeLoadMenu();
+
+    loadbutton.onclick = function()
+    {
+        showLoadMenu(!loadmenu_visible);
+    }
+
+    function loadMenuClick(name)
+    {
+        showLoadMenu(false);
+        include("file_" + this.innerHTML + ".js");
+    }
+
+    var html = "Выберите файл для загрузки<br><br>";
+    for(var i in fileList)
+        html += "<div>" + fileList[i] + "</div>";
+    loadmenu.innerHTML = html;
+
+    for(var i in loadmenu.childNodes)
+        loadmenu.childNodes[i].onclick = loadMenuClick;
 
     // Для отрисовки
     var font     = document.getElementById("apogeefont");
@@ -68,6 +70,7 @@ function apogeeBk01Emu()
 
     function reset()
     {
+        showLoadMenu(false);    
         for(var i in memory)
             memory[i] = 0;
         cpu.iff = 0;
@@ -75,7 +78,7 @@ function apogeeBk01Emu()
     }
 
     document.getElementById('resetButton').onclick = reset;
-    
+
     function binaryToArray(b)
     {
         var a = [];
@@ -86,6 +89,7 @@ function apogeeBk01Emu()
 
     function loadFile(file)
     {
+        showLoadMenu(false);    
         var off = 0;
         if (file[0] == 0xE6) off++;
         var start = (file[off] << 8) | file[off + 1]; off += 2;
@@ -104,13 +108,14 @@ function apogeeBk01Emu()
     }
 
     window.loadFile = loadFile;
-    
+
     document.getElementById('loadUserButton').onclick = function() {
+        showLoadMenu(false);    
         loadAs(function(fileName, data) 
         {
             loadFile(binaryToArray(data));
-        });        
-    }    
+        });
+    }
 
     cpu.readMemory = function(addr)
     {
@@ -156,7 +161,7 @@ function apogeeBk01Emu()
 
     window.setInterval(videoTick, 1000/60);
     reset();
-    
+
     var fileInUrl = (document.URL+"").split("?");
     if(fileInUrl.length == 2) include("file_" + fileInUrl[1] + ".js");
 }

@@ -11,6 +11,7 @@ fileList = [
 "shmel",
 "simple1",
 "starwars",
+"steelrat",
 "stopkr",
 "trasina!",
 "vulkan!",
