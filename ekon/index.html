@@ -1,0 +1,419 @@
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+</head>
+<body onload="init()" style="-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;"> 
+<script language="JavaScript">document.deep=2;</script>
+<script language="JavaScript" src="../../common.js"></script>
+<canvas id="canvas" width="224" height="224"></canvas><br>
+<script laguage="javascript">
+
+// Неиспользуемый провод на элементе ИЛИ = 0, И = 1
+// Коллизии
+// Новые элементы - Прямая линия, уголок, тройник
+
+mapW = 7;
+mapH = 7;
+map = [];
+for(var x=0; x<mapW; x++)  {
+  var m = [];
+  for(var y=0; y<mapH; y++) 
+    m.push({n:0,m:0,r:0,in:[0,0,0,0]});
+  map.push(m);
+}
+spriteSize = 79;
+
+var dontRotate = [];
+dontRotate[6] = 2;
+dontRotate[7] = 2;
+dontRotate[8] = 1;
+
+map[1][4].n = 4;
+map[2][3].n = 4;
+map[2][3].r = 2;
+map[2][4].n = 7;
+map[1][3].n = 7;
+map[0][4].n = 6;
+map[0][2].n = 6;
+map[1][2].n = 6;
+map[2][2].n = 7;
+map[3][4].n = 6;
+map[4][4].n = 6;
+map[5][4].n = 6;
+map[6][4].n = 6;
+map[1][1].n = 7;
+map[2][1].n = 6;
+map[3][1].n = 6;
+map[4][1].n = 6;
+map[5][1].n = 6;
+map[6][1].n = 6;
+
+canvas = 0;
+canvas0 =0;
+sprites = 0;
+
+function preventSelection(element){
+  var preventSelection = false;
+
+  function addHandler(element, event, handler){
+    if (element.attachEvent) 
+      element.attachEvent('on' + event, handler);
+    else 
+      if (element.addEventListener) 
+        element.addEventListener(event, handler, false);
+  }
+  function removeSelection(){
+    if (window.getSelection) { window.getSelection().removeAllRanges(); }
+    else if (document.selection && document.selection.clear)
+      document.selection.clear();
+  }
+  function killCtrlA(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+
+    if (sender.tagName.match(/INPUT|TEXTAREA/i))
+      return;
+
+    var key = event.keyCode || event.which;
+    if (event.ctrlKey && key == 'A'.charCodeAt(0))  // 'A'.charCodeAt(0) можно заменить на 65
+    {
+      removeSelection();
+
+      if (event.preventDefault) 
+        event.preventDefault();
+      else
+        event.returnValue = false;
+    }
+  }
+
+  // не даем выделять текст мышкой
+  addHandler(element, 'mousemove', function(){
+    if(preventSelection)
+      removeSelection();
+  });
+  addHandler(element, 'mousedown', function(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+    preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
+  });
+
+  // борем dblclick
+  // если вешать функцию не на событие dblclick, можно избежать
+  // временное выделение текста в некоторых браузерах
+  addHandler(element, 'mouseup', function(){
+    if (preventSelection)
+      removeSelection();
+    preventSelection = false;
+  });
+
+  // борем ctrl+A
+  // скорей всего это и не надо, к тому же есть подозрение
+  // что в случае все же такой необходимости функцию нужно 
+  // вешать один раз и на document, а не на элемент
+  addHandler(element, 'keydown', killCtrlA);
+  addHandler(element, 'keyup', killCtrlA);
+}
+
+function getOffset(elem) {
+    var top = 0, left = 0;
+    while(elem) {
+        top += parseFloat(elem.offsetTop);
+        left += parseFloat(elem.offsetLeft);
+        elem = elem.offsetParent;
+    }
+    return { top: Math.round(top), left: Math.round(left) }
+}
+
+function init() {
+  canvas0 = document.getElementById("canvas");
+  canvas0.width  = (mapW+3)*spriteSize + borderSize*2;
+  canvas0.height = mapH*spriteSize;
+  canvas0.onmousedown = function(e) { var co = getOffset(canvas0); mouseDown(e.pageX - co.left, e.pageY - co.top); e.cancelBubble = true; }
+  canvas0.ondblclick = function(e) { e.cancelBubble = true; }
+  canvas0.onmouseup   = function(e) { var co = getOffset(canvas0); mouseUp  (e.pageX - co.left, e.pageY - co.top); }
+  canvas0.onmousemove = function(e) { var co = getOffset(canvas0); mouseMove(e.pageX - co.left, e.pageY - co.top); }
+  canvas = canvas0.getContext('2d');	
+//  preventSelection(canvas0);
+
+  sprites = new Image();
+  sprites.src = 'ekon.png';
+  sprites.onload = restart;
+}
+
+function restart() {
+  redraw();
+}
+
+var selX=-1, selY=-1;
+var btnRotateR=0, btnRotateL=0, btnMirror=0;
+
+function inr(x, y, r) {
+  return x>=r[0] && y>=r[1] && x<r[0]+r[2] && y<r[1]+r[3];
+}
+
+function toMapCoords(mx, my) {
+  mx -= borderSize + spriteSize;
+  if(mx < 0) return 0;
+  var x = Math.floor(mx / spriteSize);
+  var y = Math.floor(my / spriteSize);
+  if(x < 0 || y < 0 || x >= mapW || y >= mapH) return 0;
+  return { x:x, y:y };
+}
+
+function mouseDown(mx, my) {
+  var libStart =  (mapW+2)*spriteSize + borderSize*2;
+  if(mx >= libStart) {
+    var dx = mx - libStart;
+    var y = Math.floor(my / spriteSize);
+    var dy = my - y * spriteSize;
+    dragMode = true;
+    dragDX   = dx;
+    dragDY   = dy;
+    dragX    = mx - dragDX, dragY = my - dragDY; 
+    dragSrc  = { n:y+1, m:0, r:0, in:[0,0,0,0] };
+    selX     = -1;
+    selY     = -1;
+    redraw();
+    return;
+  } 
+  if(mx < spriteSize) {
+    var n = Math.floor(my / spriteSize);
+    buttons[n] = buttons[n] ? 0 : 1;
+    selX = -1;
+    redraw();
+    return;
+  }
+  if(inr(mx, my, btnRotateR)) {
+    map[selX][selY].r = (map[selX][selY].r+1)%4; 
+    redraw();
+    return;
+  }
+  if(inr(mx, my, btnRotateL)) {
+    map[selX][selY].r = (map[selX][selY].r+3)%4; 
+    redraw();
+    return;
+  }
+  if(inr(mx, my, btnMirror)) {
+    map[selX][selY].m = !map[selX][selY].m;
+    redraw();
+    return;
+  }
+  var mx0 = mx;
+  mx -= borderSize + spriteSize;
+  var x = Math.floor(mx / spriteSize);
+  var dx = mx - x * spriteSize;
+  var y = Math.floor(my / spriteSize);
+  var dy = my - y * spriteSize;
+  if(map[x][y].n == 0) return;
+  selX = x; selY = y;
+  dragMode = true;
+  var sel = map[x][y];
+  dragSrc = { n:sel.n, m:sel.m, r:sel.r, in:[0,0,0,0] };
+  dragDX = dx;
+  dragDY = dy;
+  dragX = mx0 - dragDX, dragY = my - dragDY; 
+  x * spriteSize;
+  mouseMove(mx0, my);
+  redraw();
+}
+
+var dragMode=false, dragX=-1, dragY=-1, dragDX=-1, dragDY=-1, dragTo=0;
+
+function mouseMove(mx, my) {
+  if(dragMode) {
+    dragTo = toMapCoords(mx - dragDX + spriteSize / 2, my - dragDY + spriteSize / 2);
+    dragX = mx - dragDX, dragY = my - dragDY; 
+    redraw();
+  } 
+}
+
+function mouseUp(mx, my) {
+  for(i in buttons) buttons[i] = false;
+  mouseMove(mx, my);
+  if(dragMode) {
+    if(dragTo == 0) {
+      if(selX != -1) {
+        map[selX][selY] = { n:0, m:0, r:0, in:[0,0,0,0] };
+        selX = -1;
+      }
+    } else
+    if(dragTo.x != selX || dragTo.y != selY) {
+      var tmp = map[dragTo.x][dragTo.y];
+      if(tmp.n==0) {
+        map[dragTo.x][dragTo.y] = dragSrc;
+        if(selX != -1) map[selX][selY] = tmp;
+        selX = dragTo.x;
+        selY = dragTo.y;
+      }
+    }
+    dragMode = false;
+  } 
+  redraw();
+}
+
+
+var buttons = [];
+var sprite2size = 58;
+var sprite2delta = 13;
+var borderSize = 23;
+var lock = 0;
+
+function getSource1(x, y, d) {
+  if(x>=0 && y>=0 && x<mapW && y<mapH) {
+    var cell = map[x][y];
+    if(cell.lock == lock) return;
+    cell.lock = lock;  
+    switch(cell.n) {
+      case 6: 
+        switch(d) {
+          case 1: return getSource1(x-1, y, 1);
+          case 2: return getSource1(x, y-1, 2);
+          case 3: return getSource1(x+1, y, 3);
+          case 0: return getSource1(x, y+1, 0);
+        }
+        return 0;
+      case 7: 
+        return getSource1(x-1, y, 1) | getSource1(x, y-1, 2) | getSource1(x+1, y, 3) | getSource1(x, y+1, 0);
+    }          
+    process(x,y);
+    return cell.in[d];
+  }
+  if(x==-1 && d==1) return buttons[y];
+  return 0;
+}
+
+function getSource(x, y, d) {
+  lock++;
+  return getSource1(x, y, d);
+}
+
+function drawBlock(gx, gy, m) {
+  canvas.drawImage(sprites, m.n ? spriteSize : 0, 0, spriteSize, spriteSize, gx, gy, spriteSize, spriteSize);
+  if(m.n) {
+    var xx=gx+15, yy=gy+13, cxx=xx+(sprite2size>>1), cyy=yy+(sprite2size>>1);
+    canvas.save();
+    canvas.translate(cxx,cyy);
+    if(m.m) canvas.scale(-1, 1);
+    canvas.rotate(m.r*Math.PI/2);
+    canvas.translate(-cxx,-cyy);
+    canvas.drawImage(sprites, (sprite2size+1)*(m.n-1), spriteSize, sprite2size, sprite2size, xx, yy, sprite2size, sprite2size);
+    canvas.restore();
+  }
+}
+
+var changed = true;
+
+function process(x, y) {
+  var cell = map[x][y];
+  // Если блок обработан, выходим
+  if(cell.processed != 0) return;      
+  // Наш блок обработан  
+  cell.processed = 1;
+  // Получить напряжение на входах
+  var a = 0, b = 0, c = 0, n = map[x][y].n;
+  if(n>=1 && n<=5) {
+    switch(map[x][y].r) {
+      case 0: a = getSource(x-1, y, 1); if(n==1) break; b = getSource(x, y-1, 2); c = getSource(x, y+1, 0); break;
+      case 2: a = getSource(x+1, y, 3); if(n==1) break; b = getSource(x, y-1, 2); c = getSource(x, y+1, 0); break;
+      case 1: a = getSource(x, y-1, 2); if(n==1) break; b = getSource(x+1, y, 3); c = getSource(x-1, y, 1); break;
+      case 3: a = getSource(x, y+1, 0); if(n==1) break; b = getSource(x+1, y, 3); c = getSource(x-1, y, 1); break;
+    }
+    switch(n) {
+      case 1: a = !a; break;
+      case 2: a = a|b|c; break;
+      case 3: a = a&b&c; break;
+      case 4: a = !(a|b|c); break;
+      case 5: a = !(a&b&c); break;
+    }          
+  }
+  // Сбрасываем выходы
+  var r = (cell.r + 1) % 4;
+  for(var i=0; i<4; i++) {
+    var n = r==i ? a : 0;
+    if(cell.in[i] != n) {
+      cell.in[i] = n;
+      changed = true;
+    }
+  }
+}
+
+var timerId = 0;
+
+function timerTick() {
+  timerId = 0;
+  redraw();
+}
+
+function redraw() {
+  // Очистить все некорректные значения
+
+  changed = false;
+  if(timerId) clearTimeout(timerId);
+
+  btnMirror = btnRotateL = btnRotateR = [ 0, 0, 0, 0 ];  
+  for(var y=0; y<mapH; y++) {
+    for(var x=0; x<mapW; x++) {
+      map[x][y].processed = 0;
+    }
+  }
+  for(var y=0; y<mapH; y++) {
+    for(var x=0; x<mapW; x++) {
+      process(x, y);
+    }
+  }    
+
+  var dragInProcess = dragMode && (dragTo == 0 || (dragTo.x != selX || dragTo.y != selY))
+  var ox = spriteSize + borderSize;
+  for(var y=0; y<mapH; y++) {
+    var gx = 0, gy = y * spriteSize;
+    canvas.drawImage(sprites, buttons[y] ? 443 : 207, 0, spriteSize, spriteSize, gx, y*spriteSize, spriteSize, spriteSize); gx += spriteSize;
+    canvas.drawImage(sprites, 158, 0, borderSize, spriteSize, gx, y*spriteSize, borderSize, spriteSize); gx += borderSize;
+    for(var x=0; x<mapW; x++) {
+      var m = map[x][y].n;
+      drawBlock(gx, y*spriteSize, (dragInProcess && x==selX && y==selY) ? m : map[x][y]);
+      if(map[x][y].in[0]) canvas.drawImage(sprites, 321, 36, 8, 8, gx+(spriteSize>>1)-4, gy, 8, 8);
+      if(map[x][y].in[1]) canvas.drawImage(sprites, 321, 36, 8, 8, gx+spriteSize-8, gy+(spriteSize>>1)-4, 8, 8);
+      if(map[x][y].in[2]) canvas.drawImage(sprites, 321, 36, 8, 8, gx+(spriteSize>>1)-4, gy+spriteSize-8, 8, 8);
+      if(map[x][y].in[3]) canvas.drawImage(sprites, 321, 36, 8, 8, gx, gy+(spriteSize>>1)-4, 8, 8);
+      gx += spriteSize;
+    }
+    canvas.drawImage(sprites, 181, 0, borderSize, spriteSize, gx, y*spriteSize, borderSize, spriteSize); gx += borderSize;
+    canvas.drawImage(sprites, getSource(mapW-1, y, 1) ? 286 : 286+79, 0, spriteSize, spriteSize, gx, y*spriteSize, spriteSize, spriteSize); gx += spriteSize;
+    drawBlock(gx, y*spriteSize, { n:y+1 } );
+  }
+  if(!dragInProcess && selX != -1 && map[selX][selY].n != 0) {
+    var xx = (selX+1)*spriteSize + borderSize, yy = selY*spriteSize;
+    switch(dontRotate[map[selX][selY].n]) {
+      case undefined:
+        btnRotateR = [ xx-11, yy+((spriteSize-50)>>1), 17, 50 ];
+        canvas.drawImage(sprites, 0, 138, 17, 50, btnRotateR[0], btnRotateR[1], btnRotateR[2], btnRotateR[3]);
+        btnRotateL = [ xx+spriteSize+4, yy+((spriteSize-50)>>1), 17, 50 ];
+        canvas.drawImage(sprites, 18, 138, 17, 50, btnRotateL[0], btnRotateL[1], btnRotateL[2], btnRotateL[3]);
+//      case 1:
+//        btnMirror = [ xx+27, yy+83, 33, 17 ];
+//        canvas.drawImage(sprites, 36, 138, 33, 17, btnMirror[0], btnMirror[1], btnMirror[2], btnMirror[3]);
+    }
+  }
+  if(dragInProcess) {
+    if(dragTo != 0) {
+      var xx = (dragTo.x+1)*spriteSize + borderSize, yy = dragTo.y*spriteSize;
+      var xx1 = xx + spriteSize - 1, yy1 = yy + spriteSize - 1;
+      canvas.beginPath(); 
+      canvas.lineWidth = "1px";
+      canvas.strokeStyle = "red";
+      canvas.moveTo(xx, yy);
+      canvas.lineTo(xx1, yy);
+      canvas.lineTo(xx1, yy1);
+      canvas.lineTo(xx, yy1);
+      canvas.lineTo(xx, yy);
+      canvas.stroke(); // Draw it
+    }
+    drawBlock(dragX, dragY, dragSrc);
+  }
+ 
+  if(changed) timerId = setTimeout(timerTick, 100);
+}
+
+
+</script>             
+</body></html>
