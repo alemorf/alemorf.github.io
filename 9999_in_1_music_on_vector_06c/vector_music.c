@@ -266,7 +266,7 @@ musicReturn:    e = *hl; hl++;
             }
             // Any other command resets the music channel
             pop(hl);
-            pop(hl); // Удаляем адрес возврата в musicTick()
+            pop(hl); // Remove the return address to the musicTick() function
             musicInit();
             return musicTick();
         }

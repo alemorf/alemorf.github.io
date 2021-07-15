@@ -509,7 +509,7 @@ l19:
     ; vector_music.c:268 pop(hl);
 l18:
     pop  hl
-    ; vector_music.c:269 pop(hl); // Удаляем адрес возврата в musicTick()
+    ; vector_music.c:269 pop(hl); // Remove the return address to the musicTick() function
     pop  hl
     ; vector_music.c:270 musicInit();
     call musicInit
