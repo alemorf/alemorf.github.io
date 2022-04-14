@@ -1,0 +1,165 @@
+<html lang="ru">
+<head>
+<link href="../style.css" rel="stylesheet" type="text/css">
+<meta charset="utf-8">
+<style>
+.right_info {
+    float: right;
+    background: #27b3b2;
+    color: #FFF;
+    padding: 4px;
+    margin-left: 24px;
+    margin-bottom: 16px;
+    border-radius: 8pt;
+}
+.right_info td {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.tree {
+    padding-bottom: 16px;
+}
+.tree .i {
+    padding-left: 24px;
+    display: none;
+}
+.tree .f, .tree .d, .tree .x {
+    cursor: pointer;
+    padding-left: 48px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    display: block;
+}
+.tree .f {
+    background: url(file.png) left center no-repeat;
+}
+.tree .d {
+    background: url(folder_closed.png) left center no-repeat;
+}
+.tree .x {
+    background: url(folder_opened.png) left center no-repeat;
+}
+</style>
+</head>
+<body>
+<script src="../common.js"></script>
+<script src="comps.js"></script>
+<script>
+const arg = window._args["id"];
+const comp = comps.items[arg];
+const descr_file = comp.items["russian.txt"] ? comp.items["russian.txt"] : { name:arg, params:"", body:"" };
+StartPage(descr_file.name);
+</script>
+<script>
+const right_html = descr_file.params.split("\n").join("</td></tr><tr><td>")
+                                    .split("\t").join("</td><td>");
+
+if (right_html != "") {
+    document.write('<table class="right_info"><tr><td>' 
+                 + right_html
+                 + '</td></tr></table>');
+}
+
+const main_html = descr_file.body.split("\n***").join('</p><div class="h2">')
+                                 .split("***\n").join('</div><p>')
+                                 .split("\n*").join('</p><p class="ul">')
+                                 .split("\n\n").join("</p><p>");
+
+document.write('<p>' + main_html + '</p>');
+
+/* Photos */
+
+function ShowPhotos() {
+    let photos = [];
+    for(const i in comp.items["photo"].items) {
+       photos.push(i);
+    }
+    photos.sort(function(a,b) {
+        const x = a.split(".")[0] * 1;
+        const y = b.split(".")[0] * 1;
+        return (x < y) ? -1 : ((x > y) ? 1 : 0);
+    });
+    if (photos.length > 0) {
+        document.write('<div class="h2">Фотографии</div>');
+        for(const i in photos) {
+            const u = photos[i];
+            const y = arg + '/photo/' + u;
+            document.write('<div onclick="document.location=\'photo.html?path=' + arg + '&n=' + u + '\'" class="border" style="width:300px;height:200px;background:url(' + y + ') center center no-repeat"></div>');
+        }
+    }
+}
+
+ShowPhotos();
+
+/* Materials */
+
+const big_path = "https://raw.githubusercontent.com/aleksey-f-morozov/retro_computers/master/";
+
+function PrintFiles(parent, level, folder, path) {
+    const hide_top_file = {
+        "photo": {},
+        "russian.txt": {},
+        "english.txt": {},
+    };
+    let sorted = [];
+    for(const i in folder.items) {
+        if ((level > 0) || !hide_top_file[i]) {
+            sorted.push(i);
+        }
+    }
+    if ((level == 0) && (sorted.length != 0)) {
+        let div = document.createElement("div");
+        div.innerHTML = "Материалы";
+        div.className = "h2";
+        parent.parentNode.insertBefore(div, parent);
+    }
+    sorted.sort(function(ai, bi) {
+        let a = folder.items[ai];
+        let b = folder.items[bi];
+        if ((a.dir ? 1 : 0) != (b.dir ? 1 : 0)) {
+            return (a.dir ? 1 : 0) < (b.dir ? 1 : 0);
+        }
+        return ai > bi;
+    });
+    for(const i in sorted) {
+        const id = sorted[i];
+        let file = folder.items[id];
+        if (file.dir) {
+            let de = document.createElement("div");
+            let ie = document.createElement("div");
+            de.innerHTML = id;
+            de.className = "d";
+            de._link = file;
+            de._div = ie;
+            de._path = path + "/" + id;
+            ie.className = "i";
+            parent.appendChild(de);
+            parent.appendChild(ie);
+            de.onclick = function() {
+                if (this._hidden === undefined) {
+                    PrintFiles(this._div, 1, this._link, this._path);
+                }
+                this._hidden = !this._hidden;
+                this.className = this._hidden ? "x" : "d";
+                this.nextSibling.style.display = this._hidden ? "block" : "none";        
+            }
+        } else {
+            let de = document.createElement("a");
+            de.href = big_path + path + "/" + id;
+            de.innerHTML = id;
+            de.className = "f";
+            parent.appendChild(de);
+        }
+    }
+}
+
+document.write('<div class="tree"></div>');
+PrintFiles(document.querySelector(".tree"), 0, comp, arg);
+
+</script>
+</body>
+</html>
+
+    

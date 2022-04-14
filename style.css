@@ -1,0 +1,96 @@
+/* Stretch document to page height */
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/* Background and top object parameters  */
+body {
+    background: #FFF url(background.png);
+    background-position: 50% 50%;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;    
+}
+/* Default Font */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+a, td, th {
+    font-family: inherit;
+    font-size: inherit;
+    text-decoration: inherit;
+    color: inherit;
+}
+/* Next internal objects in <body> */
+#main {
+    text-align: center;
+    min-height: 100%;
+}
+#main > div {    
+    display: inline-block;
+    max-width: 1280px;
+    min-height: 100%;
+    box-shadow: 0pt 0pt 10pt rgba(0, 0, 0, 0.5);
+    text-align: left;    
+    background: white;
+    padding-left: 16pt;
+    padding-right: 16pt;
+}
+/* Object used to stretching <main> to the maximal width */
+.main_full {
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+}
+/* Rounded frame */
+.border {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 6pt;
+    border-radius: 8px;
+    background: #EEE;
+    overflow: hidden;
+}
+.border > div {
+    display: inline-table-cell;
+    margin-bottom: 4pt;
+    border-radius: 8px;
+}
+/* Header */
+.h1, .h2  {
+    display: block;
+    font-size: 22pt;
+    margin-left: -16pt;
+    margin-right: -16pt;
+    color: white;
+    margin-bottom: 16pt;
+    background: #27b3b2;
+    padding-left: 12pt;
+    padding-right: 12pt;
+    padding-top: 5pt;
+    padding-bottom: 5pt;
+    clear: both;
+}
+.h2 {
+    margin-top: 16pt;
+}/* Paragraph */
+p {
+    line-height: 1.5em;
+    text-indent: 20pt;
+}
+/* List with dots, it is used for modify <p>  */
+.ul {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    
+}
+.ul:before {
+    content: "• ";
+}
+

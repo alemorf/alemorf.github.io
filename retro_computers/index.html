@@ -1,0 +1,40 @@
+<html lang="ru">
+<head>
+<link href="../style.css" rel="stylesheet" type="text/css">
+<meta charset="utf-8">
+</head>
+<body>
+<script src="../common.js"></script>
+<script src="comps.js"></script>
+<script>
+StartPage("Советские домашние компьютеры и немного другого");
+
+let list = [];
+for(const comp_id in comps.items) {
+    if (comp_id[0] != '_') {
+        const comp = comps.items[comp_id];
+        if (comp.dir) {
+            const descr_file = comp.items["russian.txt"];
+            const title = (descr_file && descr_file.name) ? descr_file.name : comp_id;
+            list.push({ title: title, comp_id: comp_id });
+        }
+    }
+}
+
+list.sort(function(a, b) { return a.title > b.title; });
+
+for(const i in list) {
+    const image = comps.items[list[i].comp_id].items["photo"].items["0.jpg"] ? (list[i].comp_id + '/photo/0.jpg') : "nophoto.jpg";
+
+    document.write('<a style="text-align:center;display:inline-block"'
+                 + ' href="computer.html?id=' + list[i].comp_id + '">'
+                 + '<div class="border" style="width:300px;height:200px;background:#E0E0E0 url('
+                 + image + ') no-repeat center center">'
+                 + '</div>'
+                 + '<div>' + list[i].title + '</div>'
+                 + '</a>');
+}
+document.write('<br><br>');
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<html lang="ru">
+<head>
+<link href="../style.css" rel="stylesheet" type="text/css">
+<style>
+body {
+    background: white;
+}
+.button {
+    position: absolute;
+    display: inline-block;
+    transition: 0.3s opacity;
+    width: 48px;
+    height: 48px;
+    margin: 8pt;
+    cursor: pointer;
+}
+.button:hover {
+    opacity: 0.8;
+}
+#splash {
+    color: #804080;
+    font-size: 48pt;
+}
+.photo_main {
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.photo_main > div {
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    text-align: center;
+}
+</style>
+<meta charset="utf-8">
+</head>
+<body>
+<script language="JavaScript" src="comps.js"></script>
+<script language="JavaScript" src="../common.js"></script>
+
+<div class="photo_main"><div id="img1"></div></div>
+<div class="photo_main"><div id="img2"></div></div>
+<div class="photo_main"><div><div id="splash">💾</div></div></div>
+
+<div class="button" id="button1" onclick="prev()" style="left:0px;bottom:0px;z-index:5;background:url(prev.svg) no-repeat center center;"></div>
+<div class="button" id="button2" onclick="exit()" style="left:0px;top:0px;z-index:5;background:url(back.svg) no-repeat center center;"></div>
+<div class="button" id="button3" onclick="next()" style="right:0px;bottom:0px;z-index:5;background:url(next.svg) no-repeat center center;"></div>
+<div class="button" id="button4" onclick="full()" style="right:0px;top:0px;z-index:5;background:url(zoom.svg) no-repeat center center;"></div>
+
+<script language="JavaScript">
+
+const button1 = document.getElementById("button1");
+const button2 = document.getElementById("button2");
+const button3 = document.getElementById("button3");
+const button4 = document.getElementById("button4");
+
+window.onscroll = function(e) {
+    const x = document.body.scrollLeft + "px";
+    const y = document.body.scrollTop + "px";
+    button1.style.left = x;
+    button1.style.bottom = "-" + y;
+    button2.style.left = x;
+    button2.style.top = y;
+    button3.style.right = "-" + x;
+    button3.style.bottom = "-" + y;
+    button4.style.right = "-" + x;
+    button4.style.top = y;
+}
+
+var full_size = false;
+var title = comps.items[window._args.path].items["russian.txt"].name;
+
+// Make photos list
+var info = comps.items[window._args.path].items["photo"];
+let photos = [];
+for(const i in info.items) {
+   photos.push(i);
+}
+photos.sort(function(a,b) {
+    const x = a.split(".")[0] * 1;
+    const y = b.split(".")[0] * 1;
+    return (x < y) ? -1 : ((x > y) ? 1 : 0);
+});
+
+// Find photo
+let n = 0;
+for (let i in photos) {
+    if (photos[i] == window._args.n) {
+        n = i * 1;
+        break;
+    }
+}
+
+var img = 0;
+var splash = document.getElementById("splash");
+var imgn = 1;
+var img1 = document.getElementById("img1");
+var img2 = document.getElementById("img2");
+
+const big_photos_path = "https://raw.githubusercontent.com/aleksey-f-morozov/retro_computers/master/";
+
+function show() {
+    splash.style.transition = "0.5s";
+    splash.style.opacity = 1;
+
+    img = document.createElement('img');
+    img.onload = function()
+    {
+        splash.style.opacity = 0;
+        img._width = img.width;
+        img._height = img.height;
+        resize();
+        img.style.display = "inline-block";
+        setTimeout(function(){img.style.opacity = 1;},50);
+        var parent2 = imgn ? img2 : img1;
+        if(parent2.childNodes.length > 0) {
+            parent2.childNodes[0].style.opacity = 0;
+        }
+    }
+    img.src = (big_photos_path + window._args.path + "/photo/" + photos[n]);
+    img.style.display = "none";
+    img.style.opacity = 0;
+    img.style.display = "none";
+    img.style.transition = "0.5s opacity";
+
+    imgn = !imgn;
+    var parent = imgn ? img1 : img2;
+    if(parent.childNodes.length > 0) parent.removeChild(parent.childNodes[0]);
+    img1.parentNode.style.zIndex = imgn ? -1 : -2;
+    img2.parentNode.style.zIndex = imgn ? -2 : -1;
+    parent.appendChild(img);
+    resize();
+}
+
+function prev() {
+    n = (n == 0) ? (photos.length - 1) : (n - 1);
+    show();
+}
+
+function next() {
+    n = (n == (photos.length - 1)) ? 0 : (n + 1);
+    show();
+}
+
+function exit() {
+    window.history.back();
+}
+
+function full() {
+    if (!img) return;
+    full_size = !full_size;
+    resize();
+}
+
+function resize() {
+    var s = document._title_start + title + ". Фотография " + (n + 1) + " из " + photos.length + ".";
+    if(img._width) {
+        var w = img._width, h = img._height;
+        if (!full_size) {
+            if (w > document.body.clientWidth) {
+                h = Math.ceil(h * ((document.body.clientWidth) / w));
+                w = document.body.clientWidth;
+            }
+            if (h > document.body.clientHeight) {
+                w = Math.ceil(w * ((document.body.clientHeight) / h));
+                h = document.body.clientHeight;
+            }
+            document.body.scrollLeft = 0;
+            document.body.scrollTop = 0;
+        }
+        img.width = w;
+        img.height = h;
+        button4.style.display = (full_size || w < img._width) ? "block" : "none";
+        s += " Paзмер " + img._width + "x" + img._height + ". Масштаб " + Math.ceil(w / img._width * 100) + "%.";
+    }
+    document.title = s;
+}
+
+window.onresize = resize;
+
+document.onkeydown = function(event) {
+    switch (event.which) {
+        case 27: 
+            exit();
+            break;
+        case 37:
+            if (img.width <= document.body.clientWidth) {
+                prev(); 
+            }
+            break;
+        case 39: 
+            if (img.width <= document.body.clientWidth) {
+                next();
+            }
+            break;
+        case 32:
+            full();
+            break;
+    }
+}
+
+show();
+</script>
+
