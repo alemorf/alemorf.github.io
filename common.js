@@ -1,6 +1,6 @@
 (function() {
 
-document._title_start = "Aleksey Morozov";
+document._title_start = "Aleksey Morozov ‣ ";
 
 const url = document.URL;
 let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
@@ -38,7 +38,7 @@ window._args = obj;
 })();
 
 function StartPage(title) {
-    document.title = document._title_start + " ‣  " + title;
+    document.title = document._title_start + title;
     
     function DuplicateString(string, deep) {
         if (deep < 1) {
