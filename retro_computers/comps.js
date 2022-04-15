@@ -9448,8 +9448,6 @@ dir:1, items:{
 },
 "doc":{
 dir:1, items:{
-"spectr_001.rom":{
-},
 }
 },
 }
