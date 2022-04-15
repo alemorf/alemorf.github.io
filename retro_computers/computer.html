@@ -18,27 +18,28 @@
     padding-top: 2px;
     padding-bottom: 2px;
 }
-.tree {
+#materials {
     padding-bottom: 16px;
 }
-.tree .i {
+.materials_level {
     padding-left: 24px;
-    display: none;
+    display: none;    
 }
-.tree .f, .tree .d, .tree .x {
+.materials_file, .materials_opened_folder, .materials_closed_folder {
     cursor: pointer;
     padding-left: 48px;
     padding-top: 4px;
     padding-bottom: 4px;
     display: block;
+    width: 0;
 }
-.tree .f {
+.materials_file {
     background: url(file.png) left center no-repeat;
 }
-.tree .d {
+.materials_closed_folder {
     background: url(folder_closed.png) left center no-repeat;
 }
-.tree .x {
+.materials_opened_folder {
     background: url(folder_opened.png) left center no-repeat;
 }
 </style>
@@ -97,7 +98,7 @@ ShowPhotos();
 
 const big_path = "https://raw.githubusercontent.com/aleksey-f-morozov/retro_computers/master/";
 
-function PrintFiles(parent, level, folder, path) {
+function MakeMaterials(parent, level, folder, path) {
     const hide_top_file = {
         "photo": {},
         "russian.txt": {},
@@ -127,36 +128,37 @@ function PrintFiles(parent, level, folder, path) {
         const id = sorted[i];
         let file = folder.items[id];
         if (file.dir) {
-            let de = document.createElement("div");
+            let de = document.createElement("a");
             let ie = document.createElement("div");
             de.innerHTML = id;
-            de.className = "d";
+            de.className = "materials_closed_folder";
             de._link = file;
             de._div = ie;
             de._path = path + "/" + id;
-            ie.className = "i";
+            ie.className = "materials_level";
             parent.appendChild(de);
             parent.appendChild(ie);
             de.onclick = function() {
                 if (this._hidden === undefined) {
-                    PrintFiles(this._div, 1, this._link, this._path);
+                    MakeMaterials(this._div, 1, this._link, this._path);
                 }
                 this._hidden = !this._hidden;
-                this.className = this._hidden ? "x" : "d";
+                this.className = this._hidden ? "materials_opened_folder" : "materials_closed_folder";
                 this.nextSibling.style.display = this._hidden ? "block" : "none";        
             }
         } else {
             let de = document.createElement("a");
             de.href = big_path + path + "/" + id;
+            de.target = "_blank";
             de.innerHTML = id;
-            de.className = "f";
+            de.className = "materials_file";
             parent.appendChild(de);
         }
     }
 }
 
-document.write('<div class="tree"></div>');
-PrintFiles(document.querySelector(".tree"), 0, comp, arg);
+document.write('<div id="materials"></div>');
+MakeMaterials(document.getElementById("materials"), 0, comp, arg);
 
 </script>
 </body>

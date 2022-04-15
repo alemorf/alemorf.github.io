@@ -25,6 +25,10 @@ a, td, th {
     text-decoration: inherit;
     color: inherit;
 }
+/* Link */
+a:hover {
+    text-decoration: underline;
+}
 /* Next internal objects in <body> */
 #main {
     text-align: center;
