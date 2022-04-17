@@ -1,0 +1,8 @@
+#/bin/bash
+convert -density 384 favicon.svg -define icon:auto-resize favicon.ico
+
+#inkscape -w 16 -h 16 -e favicon_16.png favicon.svg
+#inkscape -w 32 -h 32 -e favicon_32.png favicon.svg
+#inkscape -w 48 -h 48 -e favicon_48.png favicon.svg
+#convert favicon_16.png favicon_32.png favicon_48.png favicon.ico
+#rm favicon_16.png favicon_32.png favicon_48.png

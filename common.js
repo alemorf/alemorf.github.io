@@ -1,5 +1,11 @@
 (function() {
 
+let link = document.createElement('link');
+link.rel = 'icon';
+link.href = 'https://aleksey-f-morozov.github.io/favicon.svg';
+link.type = 'image/svg+xml';
+document.getElementsByTagName('head')[0].appendChild(link);
+
 document._title_start = "Aleksey Morozov ‣ ";
 
 const url = document.URL;
