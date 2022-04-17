@@ -30,8 +30,7 @@
     padding-left: 48px;
     padding-top: 4px;
     padding-bottom: 4px;
-    display: block;
-    width: 0;
+    display: inline-block;
 }
 .materials_file {
     background: url(file.png) left center no-repeat;
@@ -137,6 +136,7 @@ function MakeMaterials(parent, level, folder, path) {
             de._path = path + "/" + id;
             ie.className = "materials_level";
             parent.appendChild(de);
+            parent.appendChild(document.createElement("br"));
             parent.appendChild(ie);
             de.onclick = function() {
                 if (this._hidden === undefined) {
@@ -144,15 +144,16 @@ function MakeMaterials(parent, level, folder, path) {
                 }
                 this._hidden = !this._hidden;
                 this.className = this._hidden ? "materials_opened_folder" : "materials_closed_folder";
-                this.nextSibling.style.display = this._hidden ? "block" : "none";        
+                this.nextSibling.nextSibling.style.display = this._hidden ? "block" : "none";        
             }
         } else {
             let de = document.createElement("a");
             de.href = big_path + path + "/" + id;
-            de.target = "_blank";
-            de.innerHTML = id;
+            de.target = "_blank";            
+            de.innerHTML = id + (file.name ? (" - " + file.name) : "");
             de.className = "materials_file";
             parent.appendChild(de);
+            parent.appendChild(document.createElement("br"));
         }
     }
 }
