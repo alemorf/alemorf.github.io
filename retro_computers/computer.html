@@ -121,7 +121,7 @@ function MakeMaterials(parent, level, folder, path) {
         if ((a.dir ? 1 : 0) != (b.dir ? 1 : 0)) {
             return (a.dir ? 1 : 0) < (b.dir ? 1 : 0);
         }
-        return ai > bi;
+        return 0 < ai.localeCompare(bi, "ru");
     });
     for(const i in sorted) {
         const id = sorted[i];

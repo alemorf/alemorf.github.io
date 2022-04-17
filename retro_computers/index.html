@@ -21,7 +21,8 @@ for(const comp_id in comps.items) {
     }
 }
 
-list.sort(function(a, b) { return a.title > b.title; });
+list.sort(function(a, b) { return 0 < a.title.localeCompare(b.title, "ru"); });
+
 
 for(const i in list) {
     const image = comps.items[list[i].comp_id].items["photo"].items["0.jpg"] ? (list[i].comp_id + '/photo/0.jpg') : "nophoto.jpg";

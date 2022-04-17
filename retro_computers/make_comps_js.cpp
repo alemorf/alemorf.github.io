@@ -1,3 +1,5 @@
+// Copyright 17-Mar-2022 Alemorf, aleksey.f.morozov@yandex.ru
+
 #include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -17,7 +19,7 @@
 static void RecursiveMkdir(const std::string& path) {
   size_t s = 0;
   for (;;) {
-    s = path.find("/", s);
+    s = path.find('/', s);
     const auto name = (s == std::string::npos) ? path : path.substr(0, s);
     if (!name.empty()) {
       if (mkdir(name.c_str(), 0777) != 0) {
@@ -32,11 +34,6 @@ static void RecursiveMkdir(const std::string& path) {
     s++;
   }
 }
-
-//static bool NeedUpdate(struct stat& src_stat, const std::string& dest_name) {
-//  struct stat dest_stat;
-//  return (lstat(dest_name.c_str(), &dest_stat) == -1) || (dest_stat.st_mtime < src_stat.st_mtime);
-//}
 
 static std::string QuoteJs(const std::string& source) {
   static const char* abc = "0123456789ABCDEF";

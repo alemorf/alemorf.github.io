@@ -1,5 +1,5 @@
 // File tools, MISRA
-// Copyright 2021-01-06 Alemorf, aleksey.f.morozov@gmail.com
+// Copyright 17-Mar-2022 Alemorf, aleksey.f.morozov@yandex.ru
 
 #ifndef FS_TOOLS_H_
 #define FS_TOOLS_H_
