@@ -1,13 +1,16 @@
 (function() {
 
+// Set icon
 let link = document.createElement('link');
 link.rel = 'icon';
 link.href = 'https://aleksey-f-morozov.github.io/favicon.svg';
 link.type = 'image/svg+xml';
 document.getElementsByTagName('head')[0].appendChild(link);
 
+// Title
 document._title_start = "Aleksey Morozov ‣ ";
 
+// Arguments
 const url = document.URL;
 let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
 let obj = {};
