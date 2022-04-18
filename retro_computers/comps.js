@@ -2527,8 +2527,8 @@ items:{
 "Yamaha_YIS503III_Circuit_vidun1.gif":{},
 "Yamaha_YIS503III_Circuit_netc_end copy.jpg":{},
 "Yamaha_YIS503III_Circuit_5cx_full.jpg":{},
-"Yamaha_YIS503III_Upgrame_128k_RAM_to_256k.png":{},
 "Yamaha_YIS503III_Circuit_cx5m2mapper64k.jpg":{},
+"Yamaha_YIS503III_Upgrade_128k_RAM_to_256k.png":{},
 "Yamaha_YIS503III_Circuit_vidun2.gif":{},
 }
 },
