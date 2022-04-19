@@ -7,14 +7,15 @@
 <script src="../common.js"></script>
 <script src="comps.js"></script>
 <script>
-StartPage("Советские домашние компьютеры и немного другого");
+StartPage(window._en ? "Soviet home computers and a little more"
+                     : "Советские домашние компьютеры и немного другого");
 
 let list = [];
 for(const comp_id in comps.items) {
     if (comp_id[0] != '_') {
         const comp = comps.items[comp_id];
         if (comp.dir) {
-            const descr_file = comp.items["russian.txt"];
+            const descr_file = comp.items[window._en ? "english.txt" : "russian.txt"];
             const title = (descr_file && descr_file.name) ? descr_file.name : comp_id;
             list.push({ title: title, comp_id: comp_id });
         }

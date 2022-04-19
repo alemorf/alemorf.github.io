@@ -43,6 +43,61 @@ if (queryString) {
 }
 
 window._args = obj;
+window._en = (window._args["language"] == "english");
+
+function MakeLanguageSwitchUrl() {
+    let url = document.URL;
+
+    /* Remove "language=english" from URL */
+    let args_pos = url.indexOf("?");
+    if (args_pos >= 0) {
+        let lang_pos = args_pos + 1;
+        for (;;) {
+            const text = "language=english";
+            lang_pos = url.indexOf(text, lang_pos);
+            if (lang_pos < 0) {
+                break;
+            }
+            const start = url.substr(lang_pos - 1, 1);
+            if ((start == "?") || (start == "&")) {
+                if (url.length == lang_pos + text.length) {
+                    url = url.substr(0, lang_pos - 1);
+                    break;
+                }
+                if (url.substr(lang_pos + text.length, 1) == "&") {
+                    url = url.substr(0, lang_pos) + url.substr(lang_pos + text.length + 1);
+                    break;
+                }
+            }
+            lang_pos++;
+        }
+    }
+
+    /* Add "language=english" */
+    if (!window._en) {
+        url += (args_pos >= 0 ? "&" : "?") + "language=english";
+    }
+
+    return url;
+}
+
+window.addEventListener('load', function() {
+    let language_switch = document.getElementById("language_switch");
+    if (language_switch) {
+        language_switch.href = MakeLanguageSwitchUrl();
+    }
+    if (window._en) {
+        let list = document.querySelectorAll("a");
+        for (let i = 0; i < list.length; i++) {
+            if (list[i] != language_switch) {
+                const url = list[i].href;
+                if ((url != "") && (url.substr(0, 8) != "https://") && (url.substr(0, 7) != "http://") && (url.substr(0, 11) != "javascript:")) {
+                    list[i].href = url + (url.indexOf("?") >= 0 ? "&" : "?") + "language=english";
+                }
+            }
+        }
+    }
+});
 
 })();
 
@@ -67,9 +122,6 @@ function StartPage(title) {
     const main_width_px = 1280;
     const hack = DuplicateString('<span class="main_full"></span>',
                                  main_width_px / main_full_width_px);
-    if (title != "") {
-        document.write('<div class="h1">' + title + hack + '</div>');
-    } else {
-        document.write(hack);
-    }
+
+    document.write('<div class="h1">' + title + '<a style="float:right" id="language_switch">' + (window._en ? 'Russian' : 'English') + '</a>' + hack + '</div>');
 }
