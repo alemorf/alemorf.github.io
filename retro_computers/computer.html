@@ -54,6 +54,7 @@ if (!descr_file) {
     descr_file = { name:arg, params:"", body:"" };
 }
 StartPage(descr_file.name);
+
 </script>
 <script>
 const right_html = descr_file.params.split("\n").join("</td></tr><tr><td>")
@@ -63,6 +64,27 @@ if (right_html != "") {
     document.write('<table class="right_info"><tr><td>' 
                  + right_html
                  + '</td></tr></table>');
+}
+
+let synced = [];
+if (comp.synced) {
+  for (let i in comp.synced) {
+    let folder = comp.items[comp.synced[i]];
+    if (folder) {
+      const entry = window._en ? "english.html" : "russian.html";
+      let main_file = folder.items[entry];
+      if (main_file) {
+        synced.push({ name: (main_file.name ? main_file.name : comp.synced[i]), url: arg + "/" + comp.synced[i] + "/" + entry});
+      }
+    }
+  }
+}
+
+if (synced.length != 0) {
+  for(let i in synced) {
+      document.write('<a href="' + synced[i].url + '">[ ' + synced[i].name + ' ]</a>');
+  }
+  document.write('<br>');
 }
 
 const main_html = descr_file.body.split("\n***").join('</p><div class="h2">')
@@ -85,7 +107,7 @@ function ShowPhotos() {
         return (x < y) ? -1 : ((x > y) ? 1 : 0);
     });
     if (photos.length > 0) {
-        document.write('<div class="h2">' + (window._en ? 'Photos' : 'Фотографии') + '</div>');
+        document.write('<div class="h2">Фотографии</div>');
         for(const i in photos) {
             const u = photos[i];
             const y = arg + '/photo/' + u;
@@ -114,7 +136,6 @@ function MakeMaterials(parent, level, folder, path) {
     }
     if ((level == 0) && (sorted.length != 0)) {
         let div = document.createElement("div");
-        div.innerHTML = window._en ? "Materials" :"Материалы";
         div.className = "h2";
         parent.parentNode.insertBefore(div, parent);
     }

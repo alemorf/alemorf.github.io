@@ -43,7 +43,7 @@ if (queryString) {
 }
 
 window._args = obj;
-window._en = (window._args["language"] == "english");
+window._en = false;
 
 function MakeLanguageSwitchUrl() {
     let url = document.URL;
@@ -81,24 +81,6 @@ function MakeLanguageSwitchUrl() {
     return url;
 }
 
-window.addEventListener('load', function() {
-    let language_switch = document.getElementById("language_switch");
-    if (language_switch) {
-        language_switch.href = MakeLanguageSwitchUrl();
-    }
-    if (window._en) {
-        let list = document.querySelectorAll("a");
-        for (let i = 0; i < list.length; i++) {
-            if (list[i] != language_switch) {
-                const url = list[i].href;
-                if ((url != "") && (url.substr(0, 8) != "https://") && (url.substr(0, 7) != "http://") && (url.substr(0, 11) != "javascript:")) {
-                    list[i].href = url + (url.indexOf("?") >= 0 ? "&" : "?") + "language=english";
-                }
-            }
-        }
-    }
-});
-
 })();
 
 function StartPage(title) {
@@ -123,5 +105,5 @@ function StartPage(title) {
     const hack = DuplicateString('<span class="main_full"></span>',
                                  main_width_px / main_full_width_px);
 
-    document.write('<div class="h1">' + title + '<a style="float:right" id="language_switch">' + (window._en ? 'Russian' : 'English') + '</a>' + hack + '</div>');
+    document.write('<div class="h1">' + title + hack + '</div>');
 }
