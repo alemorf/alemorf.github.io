@@ -83,7 +83,7 @@ if (right_html != "") {
 }
 
 function MakeArticles() {
-    if (comp.synced.length != 0) {
+    if (comp.synced && comp.synced.length != 0) {
         document.write('<div class="h2">Статьи</div>');
         for(let i in comp.synced) {
             document.write('<a class="link" href="' + i + '">' + comp.synced[i] + '</a><br>');

@@ -5335,7 +5335,7 @@ items:{
 },
 },
 synced:{
-"Bashkiria-2M/russian.programming.html": "Башкрия-2М. Программирование.",
+"Bashkiria-2M/russian.programming.html": "Башкирия-2М. Программирование.",
 },
 },
 "Specialist":{
@@ -7971,7 +7971,7 @@ items:{
 },
 synced:{
 "UT-88/8bit_font_editor.html/russian.html": "Online редактор шрифтов",
-"UT-88/how_do_i_build.html/russian.html": "Как я собирал ЮТ-88.",
+"UT-88/how_do_i_build.html/russian.html": "Как я собирал ЮТ-88",
 },
 },
 "Microsha":{
