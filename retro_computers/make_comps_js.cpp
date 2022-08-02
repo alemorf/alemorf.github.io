@@ -145,21 +145,43 @@ static void Remove(const std::string& name) {
     }
 }
 
-static void CopyFile(const std::string& from_name, const std::string& to_name, bool prepare_html = false) {
+typedef std::vector<std::pair<std::string, std::string>> SyncedDirs;
+
+static void SyncFile(const std::string& from_name, const std::string& to_name, bool prepare_html = false, const char* rel_path = "../../", SyncedDirs* synced_dirs = nullptr) {
     std::string from_file;
     FsTools::LoadFile(from_name, SIZE_MAX, &from_file);
     std::string to_file;
 
     if (prepare_html) {
-        from_file = "<html lang=\"ru\">\n"
+        // Fin title
+        static const std::string s0("<h1>");
+        static const std::string s1("</h1>");
+        auto p0 = from_file.find(s0);
+        std::string title = "";
+        if (p0 != std::string::npos) {
+            auto p1 = from_file.find(s1, p0 + s0.size());
+            if (p1 != std::string::npos) {
+                title = from_file.substr(p0 + s0.size(), p1 - p0 - s0.size());
+                from_file.erase(p0, p1 - p0 + s1.size());
+            }
+        }
+        if (title.empty()) {
+            throw std::runtime_error("No title in file " + to_name);
+        }
+        
+        // TODO: Remove body, html, head        
+        if (synced_dirs != nullptr) {
+            synced_dirs->push_back(std::pair<std::string, std::string>(to_name, title));
+        }
+        from_file = std::string("<html lang=\"ru\">\n"
                     "<head>\n"
-                    "<link href=\"../../../style.css\" rel=\"stylesheet\" type=\"text/css\">\n"
+                    "<link href=\"") + rel_path + "../style.css\" rel=\"stylesheet\" type=\"text/css\">\n"
                     "<meta charset=\"utf-8\">\n"
                     "</head>\n"
                     "<body>\n"
-                    "<script src=\"../../../common.js\"></script>\n"
-                    "<script src=\"../../comps.js\"></script>\n"
-                    "<script>StartPage(" + MakeJsPath(to_name) + ".name)</script>\n"
+                    "<script src=\"" + rel_path + "../common.js\"></script>\n"
+                    "<script src=\"" + rel_path + "\"></script>\n"
+                    "<script>StartPage(" + QuoteJs(title) + ")</script>\n"
                     + from_file + 
                     "\n</body>\n</html>\n";
     }
@@ -181,11 +203,11 @@ static void CopyFile(const std::string& from_name, const std::string& to_name, b
         }
     }
 
-    std::cout << "CopyFile " << from_name << ", " << to_name << std::endl;
+    std::cout << "SyncFile " << from_name << ", " << to_name << std::endl;
     FsTools::SaveFile(to_name, from_file);
 }
 
-static void SyncDir(const std::string& from, const std::string& to) {
+static void SyncDir(const std::string& from, const std::string& to, SyncedDirs* synced_dirs = nullptr) {
     // Delete file, create dir
     bool need_create_dir = true;
     struct stat dir_stat = {};
@@ -213,10 +235,10 @@ static void SyncDir(const std::string& from, const std::string& to) {
         if ((dir.Item()->d_type & DT_DIR) != 0) {
             SyncDir(from + "/" + name, to + "/" + name);
         } else {
-            if (name == "russian.html" || name == "english.html") {
-                CopyFile(from + "/" + name, to + "/" + name, true);
+            if (synced_dirs != nullptr && name == "russian.html") {
+                SyncFile(from + "/" + name, to + "/" + name, true, "../../", synced_dirs);
             } else {
-                CopyFile(from + "/" + name, to + "/" + name);
+                SyncFile(from + "/" + name, to + "/" + name);
             }
         }
     }
@@ -227,8 +249,8 @@ static void SyncDir(const std::string& from, const std::string& to) {
 void MakeCompsJsState::MakeLevel(uint32_t deep, std::string upPath, std::string relPath, bool photo_dir) {
     FsTools::FindFiles dir(upPath.c_str());
 
-    std::vector<std::string> synced_dirs;
-
+    SyncedDirs synced_dirs;
+    
     out += "items:{\n";
 
     while (dir.Next()) {
@@ -279,12 +301,12 @@ void MakeCompsJsState::MakeLevel(uint32_t deep, std::string upPath, std::string 
             out += "\ndir:1,\n";
             MakeLevel(deep + 1, full_path, relPath + name + "/", name == "photo");
             if (extension == "html") {
-                SyncDir(full_path, relPath + name);
-                synced_dirs.push_back(name);
+                SyncDir(full_path, relPath + name, &synced_dirs);
             }
         } else {
-            // Push description file
-            if ((deep == 1) && ((name == "russian.txt") || (name == "english.txt"))) {
+            if ((deep == 1) && (extension == "html")) {
+                SyncFile(full_path, relPath + name, true, "../", &synced_dirs);
+            } else if ((deep == 1) && ((name == "russian.txt") || (name == "english.txt"))) {
                 std::string text;
                 FsTools::LoadFile(full_path, SIZE_MAX, &text);
 
@@ -324,12 +346,14 @@ void MakeCompsJsState::MakeLevel(uint32_t deep, std::string upPath, std::string 
     out += "},\n";
 
     if (!synced_dirs.empty()) {
-        out += "synced:[\n";
+        out += "synced:{\n";
         for (auto& i : synced_dirs) {
-            out += QuoteJs(i);
+            out += QuoteJs(i.first);
+            out += ": ";
+            out += QuoteJs(i.second);
             out += ",\n";
         }
-        out += "],\n";
+        out += "},\n";
     }
 }
 

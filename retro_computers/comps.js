@@ -3249,6 +3249,9 @@ items:{
 },
 },
 },
+synced:{
+"BK0010/russian.programming.html": "БК0010. Программирование.",
+},
 },
 "_Texas Instruments TI99_GROM_Emulator":{
 dir:1,
@@ -4233,7 +4236,6 @@ items:{
 "Electronica_MK_85M":{
 dir:1,
 items:{
-"execbinary2.jpg":{},
 "russian.txt":{
 name:"Электроника МК-85",
 params:"Год\x091986\x0AОЗУ\x092 - 6 кБ\x0AПЗУ\x0916 кБ\x0AПроц\x09Т36ВМ1-2 1 МГц\x0AТекст\x0912x1x2\x0AГрафика\x0960x7x2\x0AВ ПЗУ\x09Бейсик",
@@ -4260,8 +4262,14 @@ items:{
 },
 },
 },
-"russian.execbinary.html":{},
+"execbinary.html":{
+dir:1,
+items:{
+"execbinary2.jpg":{},
+"russian.html":{},
 "execbinary1.png":{},
+},
+},
 "english.txt":{
 name:"Electronica MK-85",
 params:"Year\x091986\x0ARAM\x092 - 6 kB\x0AROM\x0916 kB\x0ACPU\x09T36VM1-2 1 Mhz\x0AText\x0912x1x2\x0AGraph\x0960x7x2\x0AIn ROM\x09Basic",
@@ -4300,6 +4308,9 @@ items:{
 "KA1013VM1.djvu":{},
 },
 },
+},
+synced:{
+"Electronica_MK_85M/execbinary.html/russian.html": "Запуск машинного кода",
 },
 },
 "Electronica_MS_0511_UKNC":{
@@ -4839,6 +4850,10 @@ items:{
 },
 },
 },
+synced:{
+"Iskra_1080_Tartu/russian.io_ports.html": "Искра 1080 Тарту. Порты ввода-вывода.",
+"Iskra_1080_Tartu/russian.basic_codes.html": "Искра 1080 Тарту. Коды команд Бейсика.",
+},
 },
 "Assistent_86_128":{
 dir:1,
@@ -5318,6 +5333,9 @@ items:{
 "17.jpg":{},
 },
 },
+},
+synced:{
+"Bashkiria-2M/russian.programming.html": "Башкрия-2М. Программирование.",
 },
 },
 "Specialist":{
@@ -7224,6 +7242,10 @@ items:{
 },
 "russian.monitor1.html":{},
 },
+synced:{
+"Specialist/russian.monitor2.html": "Специалист. Монитор версии 2.",
+"Specialist/russian.monitor1.html": "Специалист. Монитор версии 1.",
+},
 },
 "Spectr-001":{
 dir:1,
@@ -7837,9 +7859,7 @@ items:{
 "redo.svg":{},
 },
 },
-"russian.html":{
-name: "Online редактор шрифтов",
-},
+"russian.html":{},
 },
 },
 "english.txt":{
@@ -7889,9 +7909,7 @@ items:{
 "build36.jpg":{},
 "build8.jpg":{},
 "build23.png":{},
-"russian.html":{
-name: "Как я собирал ЮТ-88",
-},
+"russian.html":{},
 "build42.jpg":{},
 "build65.jpg":{},
 "build63.jpg":{},
@@ -7951,10 +7969,10 @@ items:{
 },
 },
 },
-synced:[
-"8bit_font_editor.html",
-"how_do_i_build.html",
-],
+synced:{
+"UT-88/8bit_font_editor.html/russian.html": "Online редактор шрифтов",
+"UT-88/how_do_i_build.html/russian.html": "Как я собирал ЮТ-88.",
+},
 },
 "Microsha":{
 dir:1,
@@ -14140,9 +14158,7 @@ items:{
 "file_steelrat.js":{},
 "file_robocop.js":{},
 "file_kosoban.js":{},
-"russian.html":{
-name: "Мой online эмулятор",
-},
+"russian.html":{},
 "file_stopkr.js":{},
 "fileList.js":{},
 "file_basic.js":{},
@@ -15170,9 +15186,9 @@ items:{
 },
 },
 },
-synced:[
-"my_emulator.html",
-],
+synced:{
+"Apogey_BK01C/my_emulator.html/russian.html": "Online эмулятор Апогей БК01Ц",
+},
 },
 "Delta-S_52_chips":{
 dir:1,

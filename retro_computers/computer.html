@@ -83,24 +83,10 @@ if (right_html != "") {
 }
 
 function MakeArticles() {
-    let synced = [];
-    if (comp.synced) {
-        for (let i in comp.synced) {
-            let folder = comp.items[comp.synced[i]];
-            if (folder) {
-                const entry = window._en ? "english.html" : "russian.html";
-                let main_file = folder.items[entry];
-                if (main_file) {
-                    synced.push({ name: (main_file.name ? main_file.name : comp.synced[i]), url: arg + "/" + comp.synced[i] + "/" + entry});
-                }
-            }
-        }
-    }
-
-    if (synced.length != 0) {
+    if (comp.synced.length != 0) {
         document.write('<div class="h2">Статьи</div>');
-        for(let i in synced) {
-            document.write('<a class="link" href="' + synced[i].url + '">' + synced[i].name + '</a><br>');
+        for(let i in comp.synced) {
+            document.write('<a class="link" href="' + i + '">' + comp.synced[i] + '</a><br>');
         }
     }
 }
