@@ -4452,6 +4452,25 @@ items:{
 "i1080.c":{},
 },
 },
+"my_emulator.html":{
+dir:1,
+items:{
+"iskra1080video.js":{},
+".clang-format":{},
+"iskra1080emulator.creator":{},
+"iskra1080rom.js":{},
+"iskra1080emulator.files":{},
+"russian.html":{},
+"file.dtank.js":{},
+"iskra1080keyboard.js":{},
+"filelist.js":{},
+"i8080.js":{},
+"iskra1080emu.js":{},
+"file.tetris.js":{},
+"file.test.js":{},
+"file.lab.js":{},
+},
+},
 "software":{
 dir:1,
 items:{
@@ -4627,6 +4646,9 @@ items:{
 dir:1,
 items:{
 "tetris.i1080":{},
+"level6.png":{},
+"text.png":{},
+"start.png":{},
 },
 },
 },
@@ -4863,6 +4885,7 @@ synced:{
 "Iskra_1080_Tartu/russian.terminal.html": "Искра 1080 Тарту. Коды терминала.",
 "Iskra_1080_Tartu/russian.tables.html": "Искра 1080 Тарту. Таблицы.",
 "Iskra_1080_Tartu/russian.basic_codes.html": "Искра 1080 Тарту. Коды команд Бейсика.",
+"Iskra_1080_Tartu/my_emulator.html/russian.html": "Искра 1080 Тарту. Эмулятор. Еще не готов!",
 },
 },
 "Assistent_86_128":{
