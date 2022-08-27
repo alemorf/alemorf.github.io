@@ -4403,6 +4403,24 @@ items:{
 dir:1,
 items:{
 "russian.io_ports.html":{},
+"cpm_software":{
+dir:1,
+items:{
+"games":{
+dir:1,
+items:{
+"othello.com":{},
+"mbasic.com":{},
+},
+},
+"boot":{
+dir:1,
+items:{
+"cpm22.bin":{},
+},
+},
+},
+},
 "russian.txt":{
 name:"Искра 1080 Тарту",
 params:"Год\x09≤1990\x0AОЗУ\x0964 кБ\x0AПЗУ\x0920 кБ\x0AПроц\x09К580ВМ80А 2.2 MГц\x0AГрафика\x09768x256x2, 384x256x4, палитра 16 цв\x0AЗвук\x091 бит\x0AВ ПЗУ\x09Бейсик, Монитор, Дизассемблер, CP/M BIOS",
