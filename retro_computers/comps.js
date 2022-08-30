@@ -4467,6 +4467,8 @@ items:{
 "sources":{
 dir:1,
 items:{
+"i1080.h":{},
+"i1080_internal.h":{},
 "i1080.c":{},
 },
 },
@@ -4682,6 +4684,16 @@ items:{
 "02_dd33.bin":{},
 "08_dd39.bin":{},
 "i1080.rom":{},
+},
+},
+"printscancodes":{
+dir:1,
+items:{
+"sjasmplus":{},
+"Makefile":{},
+"printscancodes.asm":{},
+"printscancodes.bim":{},
+"printscancodes.lst":{},
 },
 },
 "my_software":{
