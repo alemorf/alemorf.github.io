@@ -3888,6 +3888,8 @@ dir:1,
 items:{
 "Orel_101-1_stereo_User_manual.djvu":{},
 "Orel_101-1_stereo_Circuits.djvu":{},
+"Orel_101_stereo_Circuits.djvu":{},
+"Orel_101_stereo_User_Manual.djvu":{},
 },
 },
 },
