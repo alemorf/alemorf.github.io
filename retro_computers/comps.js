@@ -5124,7 +5124,7 @@ synced:{
 "Iskra_1080_Tartu/russian.terminal.html": "Искра 1080 Тарту. Коды терминала.",
 "Iskra_1080_Tartu/russian.tables.html": "Искра 1080 Тарту. Таблицы.",
 "Iskra_1080_Tartu/russian.basic_codes.html": "Искра 1080 Тарту. Коды команд Бейсика.",
-"Iskra_1080_Tartu/my_emulator.html/russian.html": "Искра 1080 Тарту. Эмулятор. Еще не готов!",
+"Iskra_1080_Tartu/my_emulator.html/russian.html": "Эмулятор Искра 1080 Тарту",
 },
 },
 "Assistent_86_128":{
