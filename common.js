@@ -85,7 +85,7 @@ function MakeLanguageSwitchUrl() {
 
 function StartPage(title) {
     document.title = document._title_start + title;
-    
+
     function DuplicateString(string, deep) {
         if (deep < 1) {
             return "";
