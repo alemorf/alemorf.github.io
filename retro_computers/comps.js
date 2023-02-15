@@ -12335,6 +12335,7 @@ items:{
 "5.jpg":{},
 "2.jpg":{},
 "13.jpg":{},
+"20.jpg":{},
 "19.jpg":{},
 "12.jpg":{},
 "1.jpg":{},
@@ -12610,6 +12611,7 @@ items:{
 },
 },
 "disasm.png":{},
+"russian.i8080.html":{},
 },
 synced:{
 "Iskra_1080_Tartu/russian.tables.html": "Искра 1080 Тарту. Таблицы.",
@@ -12617,6 +12619,7 @@ synced:{
 "Iskra_1080_Tartu/russian.basic_codes.html": "Искра 1080 Тарту. Коды команд Бейсика.",
 "Iskra_1080_Tartu/russian.terminal.html": "Искра 1080 Тарту. Коды терминала.",
 "Iskra_1080_Tartu/my_emulator.html/russian.html": "Эмулятор Искра 1080 Тарту",
+"Iskra_1080_Tartu/russian.i8080.html": "Система команд микропроцессора КР580ВМ80А",
 },
 },
 "Spectr-001":{
