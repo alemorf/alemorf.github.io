@@ -12597,7 +12597,6 @@ items:{
 dir:1,
 items:{
 "Iskra_1080_Tartu_Chargen.png":{},
-"Iskra_1080_Tartu_Circuit_First_Alemorf_version.dsn":{},
 "Iskra_1080_Tartu_Circuit_Alemorf_version.png":{},
 "Iskra_1080_Tartu_Chargen_2.png":{},
 "Iskra_1080_Tartu_Circuit.gif":{},
@@ -12607,7 +12606,6 @@ items:{
 "Iskra_1080_Tartu_Software_manual.djvu":{},
 "Iskra_1080_Tartu_Circuit.djvu":{},
 "Iskra_1080_Tartu_Keyboard_circuit.png":{},
-"Iskra_1080_Tartu_Circuit_First_Alemorf_version.png":{},
 },
 },
 "disasm.png":{},
@@ -14598,6 +14596,7 @@ items:{
 "i8253.pdf":{},
 "ay-3-8910-sch.pdf":{},
 "i8275.pdf":{},
+"i8251.pdf":{},
 "ay-3-8910.pdf":{},
 "i8080.pdf":{},
 "i8257.pdf":{},
