@@ -10541,6 +10541,7 @@ body:"\x22Гамма\x22, \x22Комплекс игровой Гамма\x22 и�
 "doc":{
 dir:1,
 items:{
+"ZX_Gamma_firmware.bin":{},
 "MS9016_Power_unit_circuits.jpg":{},
 "ZX_Spectrum_ROM_disassembly.txt":{},
 },
