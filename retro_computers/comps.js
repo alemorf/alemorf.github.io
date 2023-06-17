@@ -12605,6 +12605,7 @@ items:{
 dir:1,
 items:{
 "Iskra_1080_Tartu_Chargen.png":{},
+"Last Loaded Iskra_1080_Tartu_Keyboard_circuit.DBK":{},
 "Iskra_1080_Tartu_Circuit_Alemorf_version.png":{},
 "Iskra_1080_Tartu_Chargen_2.png":{},
 "Iskra_1080_Tartu_Circuit.gif":{},
