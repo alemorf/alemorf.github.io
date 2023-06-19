@@ -11895,7 +11895,6 @@ dir:1,
 items:{
 "game2048.c":{},
 "Makefile":{},
-"output.com":{},
 "c8080":{
 dir:1,
 items:{
@@ -11958,11 +11957,11 @@ items:{
 },
 },
 },
+"2048.com":{},
 "screenshot.png":{},
-"read_me.txt":{},
 "output.asm":{},
+"game2048.c.orig":{},
 "output.lst":{},
-"game2048.c.original":{},
 },
 },
 "tetris_for_iskra_1080":{
@@ -12562,6 +12561,7 @@ items:{
 "Makefile":{},
 "iskra1080rom.js":{},
 "file.rew.bas.js":{},
+"floppylist.js":{},
 "file.lab.js":{},
 "file.foto1.js":{},
 "iskra1080emulator.includes":{},
@@ -12589,6 +12589,17 @@ items:{
 "iskra1080extboot.js":{},
 "menu.css":{},
 ".clang-format":{},
+"floppy":{
+dir:1,
+items:{
+"sc2.js":{},
+"small.cpm":{},
+"network.cpm":{},
+"network.js":{},
+"small.js":{},
+"sc2.cpm":{},
+},
+},
 "iskra1080floppyController.js":{},
 "iskra1080debuger.css":{},
 "file.dtank.js":{},
