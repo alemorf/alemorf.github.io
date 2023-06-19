@@ -16531,6 +16531,7 @@ items:{
 "Makefile":{},
 "iskra1080.cxxflags":{},
 "iskra1080.includes":{},
+"iskra1080.creator.user":{},
 "floppy_header1.bin":{},
 "disk_ws":{
 dir:1,
@@ -16569,6 +16570,8 @@ items:{
 "brkevn.cal":{},
 },
 },
+"ws.cpm":{},
+"small.cpm":{},
 "dump.bin":{},
 "bios":{
 dir:1,
@@ -16595,6 +16598,7 @@ items:{
 "dump.bin":{},
 "opcodes.h":{},
 "printer.c":{},
+"font4.tmp":{},
 "cpm22":{
 dir:1,
 items:{
@@ -16641,19 +16645,18 @@ items:{
 "2048.com":{},
 "maze.com":{},
 "pacman.com":{},
-"calendar.for":{},
 "ladder.dat":{},
 "zork1.com":{},
 "zork2.com":{},
 "zork3.com":{},
 "zork3.dat":{},
-"calendar.com":{},
 "othello.com":{},
 "mbasic.com":{},
 },
 },
 "dump.asm":{},
 "iskra1080.files":{},
+"sc2.cpm":{},
 "bin":{
 dir:1,
 items:{
