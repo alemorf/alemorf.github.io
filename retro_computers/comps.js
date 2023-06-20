@@ -11869,24 +11869,6 @@ name:"Iskra 1080 Tartu",
 params:"Year\x091990\x0ARAM\x0964 kB\x0AROM\x0920 kB\x0ACPU\x09i8080 2.2 MHz\x0AGraph\x09768x256x2, 384x256x4, 16 colors palette\x0ASound\x091 bit\x0AIn ROM\x09Basic, Monitor, Disassembler, CP/M BIOS for local network",
 body:"TODO\x0A",},
 "russian.tables.html":{},
-"cpm_software":{
-dir:1,
-items:{
-"games":{
-dir:1,
-items:{
-"othello.com":{},
-"mbasic.com":{},
-},
-},
-"boot":{
-dir:1,
-items:{
-"cpm22.bin":{},
-},
-},
-},
-},
 "my_software":{
 dir:1,
 items:{
@@ -12349,9 +12331,13 @@ items:{
 "sources":{
 dir:1,
 items:{
+"asm80":{},
 "i1080.h":{},
+"Makefile":{},
 "i1080_internal.h":{},
 "i1080.c":{},
+"cmm.h":{},
+"i1080b.c":{},
 },
 },
 "russian.txt":{
@@ -12555,7 +12541,7 @@ items:{
 "my_extensions":{
 dir:1,
 items:{
-"server":{
+"file_server":{
 dir:1,
 items:{
 "stm32f401_firmware.hex":{},
@@ -16531,7 +16517,6 @@ items:{
 "Makefile":{},
 "iskra1080.cxxflags":{},
 "iskra1080.includes":{},
-"iskra1080.creator.user":{},
 "floppy_header1.bin":{},
 "disk_ws":{
 dir:1,
