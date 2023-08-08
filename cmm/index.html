@@ -1,0 +1,229 @@
+<html lang="ru">
+<head>
+<link href="../style.css" rel="stylesheet" type="text/css">
+<meta charset="utf-8">
+<style>
+.tbl {
+    border-collapse: collapse;
+}
+.tbl td, .tbl th {
+    border: 1px solid black;
+    padding: 4px 6px 4px 6px;
+}
+</style>
+</head>
+<body>
+<script src="../common.js"></script>
+<script>
+StartPage("Язык программирования Cmm");
+</script>
+
+<p>В процессе!</p>
+
+<div class="h2">Регистры</div>
+
+<p>Регистр это что то вроде глобальной переменной,
+только регистры находятся не в оперативной памяти, а прямо в центральном процессоре.
+Для программиста отличие регистров от глобальных переменных в том, 
+кто некотоыре команды работают только с регистрами.</p>
+
+<p>Программист может использовать следующие 8 битные регистры: a, b, c, d, e, h, l.
+Использовать 16 битные регистровые пары: bc, de, hl. И 16 битный регистр sp.</p>
+
+<div class="h2">Инструкции процессора</div>
+
+<table class="tbl">
+<tr><th>Ассемблер 8080</th><th>Cmm (вариант 1)</th><th>Cmm (вариант 2)</th><th>Описание</th></tr>
+<tr><td>NOP</td><td>nop();</td><td>Nop();</td><td>Пустая операция</td></tr>
+<tr><td>HLT</td><td>halt();</td><td>Halt();</td><td>Остановка процессора до прерывания</td></tr>
+<tr><td>EI</td><td>disable_interrupts();</td><td>DisableInterrupts();</td><td>???</td></tr>
+<tr><td>DI</td><td>enable_interrupts();</td><td>EnableInterrupts();</td><td>???</td></tr>   
+<tr><td>STC</td><td>set_flag_c();</td><td>SetFlagC();</td><td>Установить флаг CF</td></tr>
+<tr><td>CMC</td><td>invert_flag_c();</td><td>InvertFlagC();</td><td>Инвертировать флаг CF</td></tr>
+<tr><td>INR</td><td colspan="2">регистр8++;<br>(*hl)++;</td><td>Прибавить 1</td></tr>
+<tr><td>DCR</td><td colspan="2">регистр8--;<br>(*hl)--;</td><td>Вычесть 1</td></tr>
+<tr><td>CMA</td><td>invert(a);</td><td>Invert(a);</td><td>Вычесть 1</td></tr>
+<tr><td>DAA</td><td colspan="2">asm(" daa");</td><td>Десятичная коррекция A</td></tr>
+<tr><td>MOV</td><td colspan="2">регистр8 = регистр8;<br>регистр8 = *hl;<br>*hl = регистр8;</td><td>Копирование значений</td></tr>
+<tr><td>STAX</td><td colspan="2">*bc = a;<br>*de = a;<br></td><td>Сохранение значения в память</td></tr>
+<tr><td>LDAX</td><td colspan="2">a = *bc;<br>a = *de;<br></td><td>Загрузка значения из памяти</td></tr>
+<tr><td>OUT</td><td>out(константа, a);</td><td>Out(константа, a);</td><td>???</td></tr>
+<tr><td>IN</td><td>a = in(константа);</td><td>a = In(число);</td><td>???</td></tr>
+<tr><td>ADD</td><td colspan="2">a += регистр8;<br>a += *hl;<br></td><td>???</td></tr>
+<tr><td>ADC</td><td colspan="2">AddCarry(a, регистр8);<br>AddCarry(a, *hl);<br></td><td>???</td></tr>
+<tr><td>SUB</td><td colspan="2">a -= регистр8;<br>a -= *hl;<br></td><td>???</td></tr>
+<tr><td>SBB</td><td colspan="2">SubCarry(a, регистр8);<br>SubCarry(a, *hl);<br></td><td>???</td></tr>
+<tr><td>ANA</td><td colspan="2">a &= регистр8;<br>a &= *hl;<br></td><td>???</td></tr>
+<tr><td>XRA</td><td colspan="2">a ^= регистр8;<br>a ^= *hl;<br></td><td>???</td></tr>
+<tr><td>ORA</td><td colspan="2">a |= регистр8;<br>a |= *hl;<br></td><td>???</td></tr>
+<tr><td>CMP</td><td colspan="2">Compare(a, регистр8);<br>Compare(a, *hl);<br></td><td>???</td></tr>
+<tr><td>RLC</td><td colspan="2">CyclicRotateLeft(a, константа);<br></td><td>???</td></tr>
+<tr><td>RRC</td><td colspan="2">CyclicRotateRight(a, константа);<br></td><td>???</td></tr>
+<tr><td>RAL</td><td colspan="2">CarryRotateLeft(a, константа);<br></td><td>???</td></tr>
+<tr><td>RAR</td><td colspan="2">CarryRotateRight(a, константа);<br></td><td>???</td></tr>
+<tr><td>PUSH</td><td colspan="2">push(пара16);<br>push(a);<br></td><td>???<br>В скобках можно указывать несколько регистров.<br>Вместе с A сохраняется регистр флагов.</td></tr>
+<tr><td>POP</td><td colspan="2">pop(пара16);<br>push(a);<br></td><td>???<br>В скобках можно указывать несколько регистров.<br>Вместе с A загружается регистр флагов.</td></tr>
+<tr><td>DAD</td><td colspan="2">hl += пара16;<br>hl += sp;<br></td><td>???<br></td></tr>
+<tr><td>INX</td><td colspan="2">пара16++;<br>sp++;</td><td>Прибавить 1</td></tr>
+<tr><td>DCX</td><td colspan="2">пара16--;<br>sp--;</td><td>Вычесть 1</td></tr>
+<tr><td>XCHG</td><td colspan="2">swap(hl, de);</td><td>Обменять значения регистровых пар DE и HL.</td></tr>
+<tr><td>XTHL</td><td colspan="2">swap(hl, *sp);</td><td>Обменять значения регистровой пары HL и памяти по адресу SP.</td></tr>
+<tr><td>LXI</td><td colspan="2">пара16 = константа;</td><td>???</td></tr>
+<tr><td>MVI</td><td colspan="2">регистр8 = константа;</td><td>???</td></tr>
+<tr><td>ADI</td><td colspan="2">a += константа;<br></td><td>???</td></tr>
+<tr><td>ACI</td><td colspan="2">AddCarry(a, константа);<br></td><td>???</td></tr>
+<tr><td>SUI</td><td colspan="2">a -= константа;<br></td><td>???</td></tr>
+<tr><td>SBI</td><td colspan="2">SubCarry(a, константа);<br></td><td>???</td></tr>
+<tr><td>ANI</td><td colspan="2">a &= константа;<br></td><td>???</td></tr>
+<tr><td>XRI</td><td colspan="2">a ^= константа;<br></td><td>???</td></tr>
+<tr><td>ORI</td><td colspan="2">a |= константа;<br></td><td>???</td></tr>
+<tr><td>CPI</td><td colspan="2">Compare(a, константа);<br></td><td>???</td></tr>
+<tr><td>STA</td><td colspan="2">переменная = a;<br></td><td>???</td></tr>
+<tr><td>LTA</td><td colspan="2">a = переменная;<br></td><td>???</td></tr>
+<tr><td>SHLD</td><td colspan="2">переменная = hl;<br></td><td>???</td></tr>
+<tr><td>LHLD</td><td colspan="2">hl = переменная;<br></td><td>???</td></tr>
+<tr><td>PCHL</td><td colspan="2">return hl([команды,]);<br></td><td>???</td></tr>
+<tr><td>JMP</td><td colspan="2">return функция([команды,]);<br>return константа([команды,]);</td><td>???</td></tr>
+<tr><td>JC</td><td colspan="2">if (flag_c(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JNC</td><td colspan="2">if (flag_nc(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JZ</td><td colspan="2">if (flag_z(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JNZ</td><td colspan="2">if (flag_nz(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JM</td><td colspan="2">if (flag_m(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JP</td><td colspan="2">if (flag_p(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JPE</td><td colspan="2">if (flag_pe(команда)) return функция();</td><td>???</td></tr>
+<tr><td>JPO</td><td colspan="2">if (flag_po(команда)) return функция();</td><td>???</td></tr>
+<tr><td>RST</td><td colspan="2">Rst(константа);</td><td>???</td></tr>
+<tr><td>CALL</td><td colspan="2">функция([команды,]);<br>константа([команды,]);</td><td>???</td></tr>
+<tr><td>CC</td><td colspan="2">if (flag_c(команда)) функция();</td><td>???</td></tr>
+<tr><td>CNC</td><td colspan="2">if (flag_nc(команда)) функция();</td><td>???</td></tr>
+<tr><td>CZ</td><td colspan="2">if (flag_z(команда)) функция();</td><td>???</td></tr>
+<tr><td>CNZ</td><td colspan="2">if (flag_nz(команда)) функция();</td><td>???</td></tr>
+<tr><td>CM</td><td colspan="2">if (flag_m(команда)) функция();</td><td>???</td></tr>
+<tr><td>CP</td><td colspan="2">if (flag_p(команда)) функция();</td><td>???</td></tr>
+<tr><td>CPE</td><td colspan="2">if (flag_pe(команда)) функция();</td><td>???</td></tr>
+<tr><td>CPO</td><td colspan="2">if (flag_po(команда)) функция();</td><td>???</td></tr>
+
+<tr><td>RET</td><td colspan="2">return;</td><td>???</td></tr>
+<tr><td>RC</td><td colspan="2">if (flag_c(команда)) return;</td><td>???</td></tr>
+<tr><td>RNC</td><td colspan="2">if (flag_nc(команда)) return;</td><td>???</td></tr>
+<tr><td>RZ</td><td colspan="2">if (flag_z(команда)) return;</td><td>???</td></tr>
+<tr><td>RNZ</td><td colspan="2">if (flag_nz(команда)) return;</td><td>???</td></tr>
+<tr><td>RM</td><td colspan="2">if (flag_m(команда)) return;</td><td>???</td></tr>
+<tr><td>RP</td><td colspan="2">if (flag_p(команда)) return;</td><td>???</td></tr>
+<tr><td>RPE</td><td colspan="2">if (flag_pe(команда)) return;</td><td>???</td></tr>
+<tr><td>RPO</td><td colspan="2">if (flag_po(команда)) return;</td><td>???</td></tr>
+
+</table>
+
+<div class="h2">Дополнительные возможности</div>
+
+<table class="tbl">
+<tr><th>Cmm (вариант 1)</th><th>Cmm (вариант 2)</th><th>Ассемблер 8080</th></tr>
+<tr><td colspan="2">if (условие) команда</td><td></td></tr>
+<tr><td colspan="2">for (команда; условие; команда) команда</td><td></td></tr>
+<tr><td colspan="2">do { } while (условие)</td><td></td></tr>
+<tr><td colspan="2">while (условие) команда</td><td></td></tr>
+<tr><td colspan="2">метка:</td><td></td></tr>
+<tr><td colspan="2">goto метка</td><td></td></tr>
+<tr><td colspan="2">push_pop(регистры,) команда</td><td></td></tr>
+<tr><td colspan="2">break</td><td>JMP</td></tr>
+<tr><td colspan="2">continue</td><td>JMP</td></tr>
+<tr><td colspan="2">a *= константа</td><td>ADD A (несколько)</td></tr>
+<tr><td colspan="2">a <<= константа</td><td>ADD A (несколько)</td></tr>
+<tr><td colspan="2">"строка"</td><td>Заменяется на адрес строки, т.е. число. Строки размещаются специальной конструкцией "uint8_t ConstStrings[];".</td></tr>
+<tr><td colspan="2">'строка'</td><td>Заменяется на код первого символа.</td></tr>
+<tr><td colspan="2">intptr_t(число)</td><td>Ничего не делает. Используется для совместимости с инструментами С++.</td></tr>
+<tr><td colspan="2">(что угодно)</td><td>Используется для изменения порядка выполненяи или вычисления.</td></tr>
+<tr><td colspan="2">asm("строка");</td><td>Компиляция строки ассемблера.</td></tr>
+<tr><td colspan="2">;</td><td>Ничего не делает.</td></tr>
+<tr><td colspan="2">число;</td><td>Ничего не делает.</td></tr>
+</table>
+
+<div class="h2">Условия</div>
+
+<p>Условия используются в командах: if(), do {} while(), while(), for(;;)</p>
+
+<table class="tbl">
+<tr><th>Cmm (вариант 1)</th><th>Cmm (вариант 2)</th><th>Ассемблер 8080</th><th>Комментарий</th></tr>
+<tr><td>flag_z(команда)</td><td>FlagZ(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_nz(команда)</td><td>FlagNz(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_c(команда)</td><td>FlagC(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_nc(команда)</td><td>FlagNc(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_po(команда)</td><td>FlagPo(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_pe(команда)</td><td>FlagPe(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_p(команда)</td><td>FlagP(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td>flag_m(команда)</td><td>FlagM(команда)</td><td>Если установлен флаг ???</td></tr>
+<tr><td colspan=2>a == регистр8</td><td>CMP регистр8 + JNZ</td></tr>
+<tr><td colspan=2>a == *hl</td><td>CMP M + JNZ</td></tr>
+<tr><td colspan=2>a == 0</td><td>ORA A + JNZ</td><td>Если вы хотите получить CPI, то замените a == 0 на flag_z(Compare(a, 0))</td></tr>
+<tr><td colspan=2>a == число</td><td>CPI число + JNZ</td></tr>
+<tr><td colspan=2>a != регистр8</td><td>CMP регистр8 + JZ</td></tr>
+<tr><td colspan=2>a != *hl</td><td>CMP M + JZ</td></tr>
+<tr><td colspan=2>a != 0</td><td>ORA A + JZ</td><td>Если вы хотите получить CPI, то замените a != 0 на flag_nz(Compare(a, 0))</td></tr>
+<tr><td colspan=2>a != число</td><td>CPI число + JZ</td></tr>
+<tr><td colspan=2>a >= регистр8</td><td>CMP регистр8 + JNС</td></tr>
+<tr><td colspan=2>a >= *hl</td><td>CMP M + JNС</td></tr>
+<tr><td colspan=2>a >= число</td><td>CPI число + JNС</td></tr>
+<tr><td colspan=2>a < регистр8</td><td>CMP регистр8 + JС</td></tr>
+<tr><td colspan=2>a < *hl</td><td>CMP M + JС</td></tr>
+<tr><td colspan=2>a < число</td><td>CPI число + JС</td></tr>
+</table>
+
+<div class="h2">Специальные конструкции</div>
+
+<p>Поддерживаемые типы: uint8_t, int16_t, uint16_t, int32_t, uint64_t, int64_t.</p>
+
+<table class="tbl">
+<tr><th>Конструкция</th><th>Описание</th></tr>
+<tr><td>uint8_t ConstStrings[];</td><td>Разместить в этом месте все строковые константы "" обработанные до этого момента.</td></tr>
+<tr><td>тип имя;</td><td>Разместить переменную. Аналог "имя: DS размер".</td></tr>
+<tr><td>тип имя[количество];</td><td>Разместить массив переменных. Аналог "имя: DS размер * количество".</td></tr>
+<tr><td>тип имя = значение;</td><td>Разместить переменную. Аналог "имя: DB/DW/DD/DQ значение".</td></tr>
+<tr><td>тип имя[количество] = { значение, };</td><td>Разместить массив переменных. Аналог "имя: DB/DW/DD/DQ значение, значение...".</td></tr>
+<tr><td>extern тип имя;<br>extern тип имя[количество];</td><td>Объясняет компилятору, что переменная переменная размещена в другой единице компиляции или далее.</td></tr>
+<tr><td>extern тип имя __address(константа);<br>extern тип[количество] имя __address(константа);</td><td>Объясняет компилятору, что переменная размещена по указанному адресу.</td></tr>
+<tr><td>const int имя = число;</td><td>Описание константы. Аналог ассемблера "имя EQU число".</td></tr>
+</table>
+
+<div class="h2">Вычисления во время компиляции</div>
+
+<div class="h2">Препроцессор</div>
+
+<table class="tbl">
+<tr><th>Команда</th><th>Описание</th></tr>
+<tr><td>#include</td><td>???</td></tr>
+<tr><td>#pragma once</td><td>???</td></tr>
+<tr><td>#define</td><td>???</td></tr>
+<tr><td>#undef</td><td>???</td></tr>
+<tr><td>#ifdef</td><td>???</td></tr>
+<tr><td>#ifndef</td><td>???</td></tr>
+<tr><td>#else</td><td>???</td></tr>
+<tr><td>#endif</td><td>???</td></tr>
+</table>
+
+<div class="h2">Ассемблер</div>
+
+<table class="tbl">
+<tr><th>Команда</th><th>Описание</th></tr>
+<tr><td>align N</td><td>Выровнять указатель на N байт.</td></tr>
+<tr><td>savebin "имя файла", начало, конец</td><td>Сохранить скомпированную программу в файл.</td></tr>
+
+<tr><td>equ</td><td>???</td></tr>
+<tr><td>=</td><td>???</td></tr>
+<tr><td>org</td><td>???</td></tr>
+<tr><td>codepage</td><td>???</td></tr>
+<tr><td>savebin</td><td>???</td></tr>
+<tr><td>insert_file</td><td>???</td></tr>
+<tr><td>incbin</td><td>???</td></tr>
+<tr><td>align</td><td>???</td></tr>
+<tr><td>end</td><td>???</td></tr>
+<tr><td>db</td><td>???</td></tr>
+<tr><td>dw</td><td>???</td></tr>
+<tr><td>dd</td><td>???</td></tr>
+<tr><td>dq</td><td>???</td></tr>
+<tr><td>ds</td><td>???</td></tr>
+<tr><td>;</td><td>???</td></tr>
+</table>
+
+</body>
+</html>
