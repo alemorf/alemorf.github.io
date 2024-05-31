@@ -7521,6 +7521,7 @@ items:{
 "profi3-1-album.txt":{},
 "profi3-1-album.pdf":{},
 "profi_3_2_ver_2.djvu":{},
+"Profi3.zip":{},
 },
 },
 },
@@ -9846,6 +9847,12 @@ items:{
 name:"Альфа-БК",
 params:"Год\x09≤1990\x0AОЗУ\x0932 кБ\x0AПЗУ\x092 кБ\x0AПроц\x09К580ВМ80А 1.7 MГц\x0AТекст\x0964x25x2\x0AГрафика\x09128x62x2\x0AГруппа\x09Радио 86РК",
 body:"Альфа БК это компьютер Радио 86РК с 32 Кб ОЗУ в стальном корпусе толщиной 3 мм.\x0AОдин корпус весит 5 кг. В этом компьютере использована простейшая клавиатура.\x0AНа лист текстолита наклеено пару слоев пленки. Пользователь прижимает пальцем\x0Aпленку к текстолиту и замыкает контакт. Спустя 25 лет клавиатура работает четко.\x0A",},
+"firmware":{
+dir:1,
+items:{
+"alpha_bk_monitor.rom":{},
+},
+},
 "doc":{
 dir:1,
 items:{
@@ -17875,6 +17882,66 @@ items:{
 "ti99_grom.c":{},
 },
 },
+"Micro_80":{
+dir:1,
+items:{
+"english.txt":{
+name:"Micro 80",
+params:"Year\x091983\x0ARAM\x0964 kB\x0AROM\x092 kB\x0ACPU\x09К580ВМ80А 2.5 MHz\x0AText\x0964x32 16 colors",
+body:"TODO\x0A",},
+"my":{
+dir:1,
+items:{
+"Микро_80_Процессор_Порты.pdf":{},
+"Микро_80_Видео.pdf":{},
+},
+},
+"photo":{
+dir:1,
+items:{
+},
+},
+"russian.txt":{
+name:"Микро 80",
+params:"Год\x091983\x0AОЗУ\x0964 кБ\x0AПЗУ\x092 кБ\x0AПроц\x09К580ВМ80А 2.5 МГц\x0AТекст\x0964x32 16 цветов",
+body:"TODO",},
+"firmware":{
+dir:1,
+items:{
+"standard_bios.c":{},
+"standard_bios.bin":{},
+"font_8x10":{
+dir:1,
+items:{
+"Makefile":{},
+"convert":{},
+"font_8x10.bin":{},
+"convert.c":{},
+".clang-format":{},
+"font_8x10_k573rf4.bin":{},
+},
+},
+"standard_font_6x8.bin":{},
+},
+},
+"doc":{
+dir:1,
+items:{
+"08_Программное обеспечение микро-ЭВМ.djvu":{},
+"01_Процессорный модуль.djvu":{},
+"11_Монитор для Микро-80, совместимый с Радио-86РК.djvu":{},
+"09_Бейсик для Микро-80.djvu":{},
+"04_Модуль программатора ППЗУ.djvu":{},
+"05_Дисплейный модуль и клавиатура.djvu":{},
+"02_Модуль памяти.djvu":{},
+"07_Модуль динамического ОЗУ.djvu":{},
+"06_Модуль сопряжения с магнитофоном.djvu":{},
+"03_Отладочный модуль.djvu":{},
+"10_Программирование на Бейсике.djvu":{},
+},
+},
+},
+},
 "_pdp11asm":{
 dir:1,
 items:{
@@ -18586,10 +18653,17 @@ items:{
 "cpu":{
 dir:1,
 items:{
+"cpu.kicad_prl":{},
+"cpu.kicad_pro":{},
 "cpu.sch":{},
 "cpu-cache.lib":{},
 "sym-lib-table":{},
 "alt.lib":{},
+"cpu-backups":{
+dir:1,
+items:{
+},
+},
 "cpu.pro":{},
 "cpu.sch-bak":{},
 },
@@ -19038,6 +19112,14 @@ items:{
 "Electronica_MS1502_0104_FDD.djvu":{},
 },
 },
+},
+},
+"_DisneySoundSource":{
+dir:1,
+items:{
+"photo_2023-05-22_13-32-13.jpg":{},
+"dss1.jpg":{},
+"dss_emu_cd40105.7z":{},
 },
 },
 "Electronica_KR-03":{
@@ -19544,6 +19626,12 @@ items:{
 "fstools.h":{},
 "maketrd.creator":{},
 "sclfile.h":{},
+"build":{
+dir:1,
+items:{
+"maketrd":{},
+},
+},
 },
 },
 "Pentagon_128":{
@@ -19570,6 +19658,31 @@ dir:1,
 items:{
 "pentagon_128_test.rom":{},
 "pentagon_128.rom":{},
+},
+},
+"my_extensions":{
+dir:1,
+items:{
+"cnc":{
+dir:1,
+items:{
+"back.svg":{},
+"keys_vector.svg":{},
+"keys.svg":{},
+"zx_keyboard.svg":{},
+"hole.svg":{},
+"logo_cnc.svg":{},
+},
+},
+"power_switch":{
+dir:1,
+items:{
+"relay.LYT":{},
+"relay.dsn":{},
+"relay.png":{},
+"cut.svg":{},
+},
+},
 },
 },
 "doc":{
