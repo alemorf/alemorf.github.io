@@ -17889,28 +17889,12 @@ items:{
 name:"Micro 80",
 params:"Year\x091983\x0ARAM\x0964 kB\x0AROM\x092 kB\x0ACPU\x09К580ВМ80А 2.5 MHz\x0AText\x0964x32 16 colors",
 body:"TODO\x0A",},
-"my":{
-dir:1,
-items:{
-"Микро_80_Процессор_Порты.pdf":{},
-"Микро_80_Видео.pdf":{},
-},
-},
 "photo":{
 dir:1,
 items:{
 },
 },
-"russian.txt":{
-name:"Микро 80",
-params:"Год\x091983\x0AОЗУ\x0964 кБ\x0AПЗУ\x092 кБ\x0AПроц\x09К580ВМ80А 2.5 МГц\x0AТекст\x0964x32 16 цветов",
-body:"TODO",},
-"firmware":{
-dir:1,
-items:{
-"standard_bios.c":{},
-"standard_bios.bin":{},
-"font_8x10":{
+"my_font_8x10":{
 dir:1,
 items:{
 "Makefile":{},
@@ -17921,7 +17905,24 @@ items:{
 "font_8x10_k573rf4.bin":{},
 },
 },
+"russian.txt":{
+name:"Микро 80",
+params:"Год\x091983\x0AОЗУ\x0964 кБ\x0AПЗУ\x092 кБ\x0AПроц\x09К580ВМ80А 2.5 МГц\x0AТекст\x0964x32 16 цветов",
+body:"TODO",},
+"standard_firmware":{
+dir:1,
+items:{
+"standard_bios.c":{},
+"standard_bios.bin":{},
 "standard_font_6x8.bin":{},
+},
+},
+"my_circuits":{
+dir:1,
+items:{
+"Микро_80_Процессор_Порты.pdf":{},
+"Микро_80_Видео.pdf":{},
+"Микро_80_Отладочный_модуль.pdf":{},
 },
 },
 "doc":{
