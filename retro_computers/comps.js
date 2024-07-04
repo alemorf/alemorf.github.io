@@ -50,6 +50,7 @@ body:"Партнер 01.01 это улучшенная версия компью
 "software":{
 dir:1,
 items:{
+"Partner_01_01_WAV.zip":{},
 "games":{
 dir:1,
 items:{
@@ -287,13 +288,13 @@ items:{
 "firmware":{
 dir:1,
 items:{
+"lpt_1.rkp":{},
 "font.rom":{},
 "mcpg.rom":{},
-"lpt2.rkp":{},
 "fdd.rom":{},
 "bios.rom":{},
-"lpt1.rkp":{},
 "basic.rom":{},
+"lpt_2.rkp":{},
 },
 },
 "doc":{
@@ -12043,7 +12044,6 @@ items:{
 "level2.h":{},
 "megalz.exe":{},
 "pack_logo.cpp":{},
-"plane.H":{},
 "plane.png":{},
 "logo.inc":{},
 "pack_font":{},
@@ -18661,9 +18661,15 @@ items:{
 "cpu-cache.lib":{},
 "sym-lib-table":{},
 "alt.lib":{},
+"cpu.kicad_sch":{},
+"_autosave-cpu.sch":{},
 "cpu-backups":{
 dir:1,
 items:{
+"cpu-2024-06-10_010347.zip":{},
+"cpu-2024-06-13_032343.zip":{},
+"cpu-2024-06-11_025352.zip":{},
+"cpu-2024-06-13_025335.zip":{},
 },
 },
 "cpu.pro":{},
