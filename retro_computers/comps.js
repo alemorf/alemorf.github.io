@@ -428,6 +428,13 @@ items:{
 name:"Yamaha YIS-503IIIR KUVT 2",
 params:"Year\x091985\x0ARAM\x09256 kB + 128 kB\x0AROM\x0948 kB\x0ACPU\x09Z80 3.6 MHz\x0AGraph\x09512x424x16, 256x424x256, sprites, 512 colors palette\x0ASound\x09AY-3-8910\x0AIn ROM\x09Basic\x0AGroup\x09MSX2",
 body:"TODO\x0A",},
+"soft":{
+dir:1,
+items:{
+"lunar ball (1983) (ascii) (j).mx1":{},
+"loadrom.com":{},
+},
+},
 "photo":{
 dir:1,
 items:{
@@ -457,11 +464,11 @@ body:"Yamaha YIS-503IIIR это японский домашний компьют
 "firmware":{
 dir:1,
 items:{
-"ide_sunrise":{
+"ide_nextor_sunrise":{
 dir:1,
 items:{
-"cfcard.bin.7z":{},
-"rom.bin":{},
+"nextor_2.0.4.sunriseide.bin.7z":{},
+"system_disk_nextor.dsk.7z":{},
 },
 },
 },
@@ -17924,6 +17931,7 @@ items:{
 "Микро_80_Процессор_Порты.pdf":{},
 "Микро_80_Видео.pdf":{},
 "Микро_80_Отладочный_модуль.pdf":{},
+"Микро_80_Динамическое_ОЗУ.pdf":{},
 },
 },
 "doc":{
@@ -18661,15 +18669,9 @@ items:{
 "cpu-cache.lib":{},
 "sym-lib-table":{},
 "alt.lib":{},
-"cpu.kicad_sch":{},
-"_autosave-cpu.sch":{},
 "cpu-backups":{
 dir:1,
 items:{
-"cpu-2024-06-10_010347.zip":{},
-"cpu-2024-06-13_032343.zip":{},
-"cpu-2024-06-11_025352.zip":{},
-"cpu-2024-06-13_025335.zip":{},
 },
 },
 "cpu.pro":{},
