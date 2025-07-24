@@ -86,3 +86,13 @@ function loadBasic80() {
     for (let i in basic80)
         ram[i] = basic80[i];
 }
+
+function loadColorLines() {
+    reset(0x100);
+    for (let i in testApp)
+        ram[(i | 0) + 0x100] = testApp[i];
+}
+
+let fileInUrl = (document.URL+"").split("?");
+if(fileInUrl.length == 2 && fileInUrl[1] == "ColorLines")
+    loadColorLines();
