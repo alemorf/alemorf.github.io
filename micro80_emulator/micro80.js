@@ -81,18 +81,28 @@ function loadFile() {
     });
 }
 
+function loadAny(org, data) {
+    reset(org);
+    for (let i in testApp)
+        ram[(i | 0) + org] = data[i];
+}
+
 function loadBasic80() {
-    reset(0);
-    for (let i in basic80)
-        ram[i] = basic80[i];
+    loadAny(0, basic80);
 }
 
 function loadColorLines() {
-    reset(0x100);
-    for (let i in testApp)
-        ram[(i | 0) + 0x100] = testApp[i];
+    loadAny(0x100, testApp);
+}
+
+function loadKosoban() {
+    loadAny(0x100, kosoban);
 }
 
 let fileInUrl = (document.URL+"").split("?");
-if(fileInUrl.length == 2 && fileInUrl[1] == "ColorLines")
-    loadColorLines();
+if(fileInUrl.length == 2) {
+    if (fileInUrl[1] == "ColorLines") 
+        loadColorLines();
+    else if (fileInUrl[1] == "Kosoban") 
+        loadKosoban();
+}
