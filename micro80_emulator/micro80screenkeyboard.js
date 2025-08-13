@@ -61,6 +61,7 @@ function Micro80ScreenKeyboard(parentDocumentElement) {
     html += '<div style="left:700px;top:150px" id="key57">←</div>';
     html += '<div style="left:750px;top:150px" id="key59">↓</div>';
     html += '<div style="left:800px;top:150px" id="key56">→</div>';
+    html += '<div style="left:125px;top:200px;width:395px" id="key54"> </div>';
     
     let div = document.createElement('div');
     div.className = "keyboard";
