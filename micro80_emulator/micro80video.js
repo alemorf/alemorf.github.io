@@ -15,13 +15,13 @@ function Micro80Video(id, ram) {
     const normalColor = 0xA0;
 
     function drawChar(x, y, b, c) {
-        const textH = ((c >> 6) & 1) * (0xFF - normalColor);
-        const textR = ((c >> 0) & 1) * normalColor + textH;
+        const textH = ((c >> 3) & 1) * (0xFF - normalColor);
+        const textB = ((c >> 0) & 1) * normalColor + textH;
         const textG = ((c >> 1) & 1) * normalColor + textH;
-        const textB = ((c >> 2) & 1) * normalColor + textH;
-        const backR = ((c >> 3) & 1) * normalColor;
-        const backG = ((c >> 4) & 1) * normalColor;
-        const backB = ((c >> 5) & 1) * normalColor;
+        const textR = ((c >> 2) & 1) * normalColor + textH;
+        const backB = ((c >> 4) & 1) * normalColor;
+        const backG = ((c >> 5) & 1) * normalColor;
+        const backR = ((c >> 6) & 1) * normalColor;
 
         let va = (x * charWidth + y * charHeight * canvas.width) * bytesPerPixel;
         for (let cy = 0; cy < charHeight; cy++) {
