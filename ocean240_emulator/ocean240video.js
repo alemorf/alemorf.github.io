@@ -5,9 +5,9 @@
 function Ocean240Video(canvasId, memory) {
     let canvas = document.getElementById(canvasId);
     let ctx = canvas.getContext("2d");
-    let w = 768;
+    let w = 1024;
     canvas.style.width = w + "px";
-    canvas.style.height = Math.round(w / 5 * 4) + "px";
+    canvas.style.height = Math.round(w / 4 * 3) + "px";
     canvas.width = 512;
     canvas.height = 512;
 

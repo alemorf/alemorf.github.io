@@ -2,14 +2,22 @@
 // (c) 25-05-2025 Alexey Morozov aleksey.f.morozov@gmail.com
 // License: Apache License Version 2.0
 
+const PORT_ROM = 0xFF;
+const PORT_ROM_MASK = 0xFC;
+const PORT_ROM__ENABLE_RAM = 1 << 2;
+const PORT_ROM__ROM_SHIFT = 3;
+
 let ram = new Uint8Array(0x10000);
 let video = new Micro80Video("video", ram);
 let screenKeyboard = new Micro80ScreenKeyboard();
 let keyboard = new Micro80Keyboard(screenKeyboard);
 
 let init = true;
+let portFF = 0;
 
 function readMemory(addr) {
+    if (addr < 0x8000 && (portFF & PORT_ROM__ENABLE_RAM) == 0)
+        return cpmBios[(addr + (portFF >> PORT_ROM__ROM_SHIFT) * 0x8000) % cpmBios.length];
     if (addr >= 0xF800)
         init = false;
     if (addr >= 0xF800 || init)
@@ -34,6 +42,8 @@ function readIo(addr) {
 function writeIo(addr, byte) {
     if (addr == 7)
         port7 = byte;
+    else if (addr == 0xFF)
+        portFF = byte;
 }
 
 let cpu = new I8080(readMemory, writeMemory, readIo, writeIo);
@@ -63,10 +73,15 @@ function reset(startAddress) {
     init = true;
     cpu.reset();
     if (startAddress !== undefined) {
-        for (let i = 0; i < 50000 && ram[0xE040] != 0xA7; i++)
-            cpu.instruction();
-        cpu.jump(startAddress);
-    }
+        portFF = PORT_ROM__ENABLE_RAM;
+        if (startAddress != 0x10000) {
+            for (let i = 0; i < 50000 && ram[0xE040] != 0xA7; i++)
+                cpu.instruction();
+            cpu.jump(startAddress);
+        }
+    } else {
+        portFF = 0;
+    }    
 }
 
 function loadFile() {
