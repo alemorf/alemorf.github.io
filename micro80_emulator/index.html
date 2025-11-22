@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <style>
 #video {
+    border: 8px solid black;
     width: 720px;
     height: 640px;
     image-rendering1: -webkit-optimize-contrast;
@@ -11,14 +12,30 @@
     image-rendering1: crisp-edges;
 }
 </style>
+<link href="menu.css" rel="stylesheet">
 </head>
 <body>
-<a href="javascript:reset()">CP/M</a>
- | <a href="javascript:reset(0x10000)">Монитор</a>
- | <a href="javascript:loadBasic80()">Загрузить Бейсик</a>
- | <a href="javascript:loadColorLines()">Загрузить Цветные линии</a>
- | <a href="javascript:loadKosoban()">Загрузить Кособан</a>
- | <a href="javascript:loadFile()">Загрузить файл</a><br>
+
+<ul class="menu" style="width:720px">
+  <li><div>Перезагрузка</div>
+    <ul id="softMenu">
+      <li onclick="reset()"><div>CP/M</div></li>
+      <li onclick="reset(0x10000)"><div>Монитор</div></li>
+      <li onclick="loadUserFile()"><div>Загрузить файл</div></li>
+    </ul>
+  </li>
+  <li><div>Диск B:</div>
+    <ul id="softMenu">
+      <li onclick="resetFloppy(0)"><div>Сброс</div></li>
+    </ul>
+  </li>
+  <li><div>Диск С:</div>
+    <ul id="softMenu">
+      <li onclick="resetFloppy(1)"><div>Сброс</div></li>
+    </ul>
+  </li>
+</ul>
+
 <canvas width=512 height=320 id="video"></canvas>
 <script src="i8080.js"></script>
 <script src="micro80bios.js"></script>
@@ -27,10 +44,11 @@
 <script src="micro80video.js"></script>
 <script src="micro80keyboard.js"></script>
 <script src="micro80screenkeyboard.js"></script>
+<script src="floppy.js"></script>
+<script src="vg93.js"></script>
 <script src="filetools.js"></script>
-<script src="basic80.js"></script>
-<script src="test.js"></script>
-<script src="kosoban.js"></script>
+<script src="menu.js"></script>
+<script src="filelist.js"></script>
 <script src="micro80.js"></script>
 </body>
 </html>
