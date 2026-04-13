@@ -1,4 +1,7 @@
 all: favicon.ico retro_computers
+	git add .
+	git commit -m "-"
+	git push
 
 .PHONY: clean
 clean:

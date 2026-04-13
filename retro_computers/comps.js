@@ -18538,7 +18538,6 @@ items:{
 "p1-isa8.txt":{},
 },
 },
-"manual.odt":{},
 "short_adapter":{
 dir:1,
 items:{
