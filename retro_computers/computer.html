@@ -155,12 +155,12 @@ function MakeMaterials(parent, level, folder, path) {
         parent.appendChild(de);
     }
     sorted.sort(function(ai, bi) {
-        let a = folder.items[ai];
-        let b = folder.items[bi];
-        if ((a.dir ? 1 : 0) != (b.dir ? 1 : 0)) {
-            return (a.dir ? 1 : 0) < (b.dir ? 1 : 0);
-        }
-        return 0 < ai.localeCompare(bi, "ru");
+        const a = folder.items[ai];
+        const b = folder.items[bi];
+        const r = (a.dir ? 0 : 1) - (b.dir ? 0 : 1);
+        if (r)
+            return r;
+        return ai.localeCompare(bi, "ru");
     });
     for(const i in sorted) {
         const id = sorted[i];
