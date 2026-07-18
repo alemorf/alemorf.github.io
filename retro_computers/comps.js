@@ -15020,6 +15020,8 @@ items:{
 "i1080_sources":{
 dir:1,
 items:{
+"cpm22.bin":{},
+"iskra1080cpm.bin":{},
 "files":{
 dir:1,
 items:{
@@ -15036,12 +15038,18 @@ items:{
 "schoolr.com":{},
 },
 },
+"cpm22.lst":{},
 "i1080.h":{},
 "Makefile":{},
 "iskra1080.cxxflags":{},
 "iskra1080.includes":{},
 "iskra1080cpm1.bin":{},
+"bios.asm":{},
+"make_rom":{},
+"cpm22.asm":{},
 "prog":{},
+"loader.asm":{},
+"bios.bin":{},
 "bios":{
 dir:1,
 items:{
@@ -15086,9 +15094,11 @@ items:{
 dir:1,
 items:{
 "prepare_font.cpp":{},
+"prepare_font":{},
 },
 },
 "drawchar4.h":{},
+"font4.tmp":{},
 "drawcursor4.c":{},
 "drawchar4.c":{},
 "setmode.c":{},
@@ -15167,6 +15177,8 @@ items:{
 "make_rom_file.cpp":{},
 },
 },
+"loader.bin":{},
+"loader.lst":{},
 ".gitignore":{},
 "storage.h1":{},
 "storage.h":{},
@@ -15201,6 +15213,7 @@ items:{
 "mbasic.com":{},
 },
 },
+"bios.lst":{},
 "bin":{
 dir:1,
 items:{
